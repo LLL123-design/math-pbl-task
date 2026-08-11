@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>比例的世界 · 项目式学习任务单</title>
+<style>
+  :root{
+    --primary:#2b6cb0;
+    --primary-light:#ebf4ff;
+    --accent:#2f855a;
+    --accent-light:#f0fff4;
+    --danger:#c53030;
+    --danger-dark:#9b2c2c;
+    --text:#2d3748;
+    --muted:#718096;
+    --border:#e2e8f0;
+    --bg:#f7fafc;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+  .container{max-width:960px;margin:0 auto;padding:24px 16px 60px}
+
+  .header{text-align:center;padding:32px 20px 24px;background:linear-gradient(135deg,#2b6cb0,#2c5282);color:#fff;border-radius:14px;margin-bottom:24px;box-shadow:0 4px 16px rgba(43,108,176,.2)}
+  .header h1{font-size:24px;font-weight:700;letter-spacing:1px}
+  .header p{font-size:14px;opacity:.85;margin-top:8px}
+
+  .project-title{text-align:center;font-size:22px;font-weight:700;color:var(--primary);margin-bottom:6px}
+  .project-subtitle{text-align:center;color:var(--muted);font-size:14px;margin-bottom:20px}
+
+  .section{background:var(--card);border-radius:12px;padding:24px 28px;margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.05);border-left:4px solid var(--primary)}
+  .section h2{font-size:19px;color:var(--primary);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--primary-light);display:flex;align-items:center;gap:8px}
+  .section h2 .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--primary);color:#fff;border-radius:50%;font-size:14px}
+  .section h3{font-size:16px;color:var(--text);margin:18px 0 10px;padding-left:10px;border-left:3px solid var(--accent)}
+  .section p{margin-bottom:10px;color:#4a5568}
+
+  .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+  .info-item label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+  .info-item input{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;background:#fff}
+  .info-item input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  th,td{border:1px solid var(--border);padding:9px 10px;text-align:left;vertical-align:top}
+  th{background:var(--primary-light);color:var(--primary);font-weight:600}
+  td input,td textarea{width:100%;border:none;outline:none;font-size:14px;background:transparent;font-family:inherit;resize:vertical}
+  td textarea{min-height:36px}
+
+  .btn-plus{
+    display:inline-flex;align-items:center;gap:4px;
+    padding:6px 14px;background:var(--accent);color:#fff;
+    border:none;border-radius:6px;cursor:pointer;font-size:13px;margin-top:8px;
+  }
+  .btn-plus:hover{background:#276749}
+
+  .btn-minus{
+    background:var(--danger);color:#fff;border:none;
+    border-radius:4px;padding:3px 8px;font-size:14px;cursor:pointer;
+  }
+  .btn-minus:hover{background:var(--danger-dark)}
+
+  .stage{background:#fafbfc;border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:14px 0}
+  .stage-tag{display:inline-block;background:var(--primary);color:#fff;font-size:12px;padding:3px 10px;border-radius:12px;margin-bottom:8px}
+  .stage ol{padding-left:22px;margin:8px 0}
+  .stage ol li{margin-bottom:6px;color:#4a5568}
+
+  .tool-box{background:linear-gradient(135deg,#f0fff4,#ebf8ff);border:1px dashed #68d391;border-radius:10px;padding:18px 20px;margin:16px 0}
+  .tool-box h4{color:var(--accent);font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+  .tool-row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:10px}
+  .tool-row .field{flex:1;min-width:140px}
+  .tool-row label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+  .tool-row input{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:14px}
+  .tool-result{background:#fff;padding:12px 16px;border-radius:6px;margin-top:10px;font-size:14px;border-left:3px solid var(--accent)}
+  .tool-result strong{color:var(--accent)}
+
+  .upload-area{border:2px dashed var(--border);border-radius:8px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:#fafbfc}
+  .upload-area:hover{border-color:var(--primary);background:var(--primary-light)}
+  .upload-area .icon{font-size:32px;color:var(--muted)}
+  .upload-area p{color:var(--muted);font-size:13px;margin-top:6px}
+  .upload-preview{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px}
+  .upload-preview img{max-width:160px;max-height:120px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
+  .upload-preview .file-chip{background:var(--primary-light);color:var(--primary);padding:6px 12px;border-radius:6px;font-size:13px;display:flex;align-items:center;gap:6px}
+
+  .eval-table th{text-align:center}
+  .eval-table td{text-align:center;vertical-align:middle}
+  .eval-table td:first-child{text-align:left;font-weight:500}
+  .eval-radio{display:flex;justify-content:center;gap:6px}
+  .eval-radio label{cursor:pointer}
+  .eval-radio input{display:none}
+  .eval-radio input:checked + span{background:var(--primary);color:#fff;border-color:var(--primary)}
+  .eval-radio span{display:inline-block;padding:4px 10px;border-radius:4px;font-size:13px;border:1px solid var(--border)}
+
+  .reflection-box{margin-bottom:14px}
+  .reflection-box label{display:block;font-weight:600;color:var(--text);margin-bottom:6px;font-size:14px}
+  .reflection-box textarea{width:100%;min-height:90px;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:inherit;resize:vertical;line-height:1.7}
+  .reflection-box textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+
+  .print-bar{text-align:center;margin-top:20px}
+  .btn-print{padding:10px 28px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:600;box-shadow:0 2px 8px rgba(43,108,176,.25)}
+  .btn-print:hover{background:#2c5282}
+
+  .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+  .tag{background:var(--primary-light);color:var(--primary);padding:4px 12px;border-radius:14px;font-size:13px}
+  .tag.green{background:var(--accent-light);color:var(--accent)}
+
+  @media print{
+    body{background:#fff}
+    .btn-print,.btn-plus,.btn-minus,.upload-area{display:none!important}
+    .section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .header{background:#2b6cb0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+  @media(max-width:640px){
+    .info-grid{grid-template-columns:1fr}
+    .section{padding:18px 16px}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>华东师大版 · 七年级上册数学</h1>
+    <p>项目式学习任务单（PBL Task Sheet）</p>
+  </div>
+
+  <div class="project-title">比例的世界 · 项目学习任务单</div>
+  <div class="project-subtitle">从建筑模型到尺寸缩放，用比例丈量世界</div>
+
+  <!-- 一、基础信息 -->
+  <div class="section">
+    <h2><span class="num">一</span>基础信息</h2>
+    <div class="info-grid">
+      <div class="info-item"><label>姓名</label><input type="text" placeholder="请填写姓名"></div>
+      <div class="info-item"><label>班级</label><input type="text" placeholder="如：七年级1班"></div>
+      <div class="info-item"><label>填写日期</label><input type="date"></div>
+    </div>
+    <h3>团队分工情况</h3>
+    <table id="team-table">
+      <thead><tr><th style="width:30%">成员姓名</th><th>承担任务</th><th style="width:80px">操作</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><input type="text"></td>
+          <td><input type="text"></td>
+          <td><button class="btn-minus" onclick="delRow(this,'team-table')">➖</button></td>
+        </tr>
+        <tr>
+          <td><input type="text"></td>
+          <td><input type="text"></td>
+          <td><button class="btn-minus" onclick="delRow(this,'team-table')">➖</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn-plus" onclick="addRow('team-table')">➕ 添加成员</button>
+  </div>
+
+  <!-- 二、项目简介 -->
+  <div class="section">
+    <h2><span class="num">二</span>项目简介</h2>
+    <h3>项目背景</h3>
+    <p>在生活与各类专业领域中，精准还原实物大小、复刻物体形态都离不开比例知识。制作标准的房屋与器械设计图、复刻建筑模型等工作，均需要依托比例实现实物与模型的尺寸缩放。比例是艺术设计、机械制造、建筑研究等领域的核心基础工具。</p>
+    <p>本次项目引导同学们将课本比例知识落地应用，打通数学与多学科的联系，锻炼数据采集、精准换算、手工实操能力，探索比例的实用价值，学会用比例知识解决真实生活问题。</p>
+
+    <h3>项目目标</h3>
+    <p>1. 掌握比、比例、比例尺的核心定义与应用方法；</p>
+    <p>2. 熟练运用尺寸换算、误差修正的基本方法，能按比例精准复刻建筑模型；</p>
+    <p>3. 能综合运用资料检索、美术造型、手工制作等跨学科知识完成项目成果；</p>
+    <p>4. 培养团队协作、数据素养与实践创新能力。</p>
+
+    <h3>涉及知识</h3>
+    <div class="tag-list">
+      <span class="tag">比与比例</span>
+      <span class="tag">比例尺与缩放</span>
+      <span class="tag">尺寸换算与误差修正</span>
+      <span class="tag green">美术·手工制作</span>
+      <span class="tag green">信息技术·资料检索</span>
+    </div>
+  </div>
+
+  <!-- 三、项目进程 -->
+  <div class="section">
+    <h2><span class="num">三</span>项目进程</h2>
+
+    <h3>任务：自制知名建筑物比例模型</h3>
+
+    <div class="stage">
+      <span class="stage-tag">阶段一：数据采集</span>
+      <ol>
+        <li>选取东方明珠、布达拉宫、埃菲尔铁塔等知名建筑。</li>
+        <li>通过实地测量、网络查询、图书馆查阅资料等方式，获取建筑整体及各部件的真实尺寸、结构参数、历史背景。</li>
+      </ol>
+      <table id="building-table">
+        <thead><tr><th>建筑部件</th><th>真实尺寸</th><th>数据来源</th><th>备注</th><th style="width:80px">操作</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><input type="text" placeholder="如：建筑总高"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><button class="btn-minus" onclick="delRow(this,'building-table')">➖</button></td>
+          </tr>
+          <tr>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><button class="btn-minus" onclick="delRow(this,'building-table')">➖</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn-plus" onclick="addRow('building-table')">➕ 添加部件数据</button>
+    </div>
+
+    <div class="stage">
+      <span class="stage-tag">阶段二：模型制作</span>
+      <ol>
+        <li>结合建筑结构特点与材料特性，选定合适缩放比例。</li>
+        <li>利用硬纸板、一次性筷子、塑料废品等环保材料，精准复刻建筑整体与局部比例关系。</li>
+        <li>撰写模型说明书，标注模型缩放比例、核心尺寸数据、制作材料、建筑历史背景、制作流程。</li>
+      </ol>
+
+      <div class="tool-box">
+        <h4>📐 交互式辅助工具：模型缩放比例换算</h4>
+        <div class="tool-row">
+          <div class="field"><label>建筑真实高度（米）</label><input type="number" id="b-real-h" value="468" min="1"></div>
+          <div class="field"><label>期望模型高度（厘米）</label><input type="number" id="b-model-h" value="30" min="1"></div>
+        </div>
+        <div class="tool-result" id="model-scale-result">请输入数据后查看推荐缩放比例</div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <span class="stage-tag">阶段三：成果提交</span>
+      <p>完成比例合规、结构稳固的建筑模型后，将照片上传至下方成果展示区，并填写模型说明书摘要。</p>
+      <div class="upload-area" onclick="document.getElementById('upload-1').click()">
+        <div class="icon">📁</div>
+        <p>点击上传建筑模型照片与说明书（图片或文件均可）</p>
+        <input type="file" id="upload-1" multiple accept="image/*,.pdf" style="display:none" onchange="previewFiles(this,'preview-1')">
+      </div>
+      <div class="upload-preview" id="preview-1"></div>
+      <h4 style="margin-top:14px;font-size:14px;color:var(--text)">模型说明书摘要</h4>
+      <textarea rows="3" placeholder="标注缩放比例、核心尺寸、材料、制作流程……" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:14px;resize:vertical"></textarea>
+    </div>
+
+    <p style="margin-top:14px;padding:10px 14px;background:var(--accent-light);border-radius:6px;font-size:14px"><strong>成果形式：</strong>比例合规的建筑物手工模型、建筑模型数学说明书。</p>
+  </div>
+
+  <!-- 四、自我评价 -->
+  <div class="section">
+    <h2><span class="num">四</span>自我评价</h2>
+    <table class="eval-table">
+      <thead><tr><th style="width:22%">评价维度</th><th>优秀（A）</th><th>良好（B）</th><th>合格（C）</th><th style="width:120px">自我评分</th></tr></thead>
+      <tbody>
+        <tr><td>知识点运用</td><td>比例换算准确，缩放计算无误</td><td>知识点基本正确，存在少量误差</td><td>多处概念、计算错误</td><td><div class="eval-radio"><label><input type="radio" name="e1"><span>A</span></label><label><input type="radio" name="e1"><span>B</span></label><label><input type="radio" name="e1"><span>C</span></label></div></td></tr>
+        <tr><td>模型精确度</td><td>整体与局部比例完全贴合真实建筑</td><td>少量尺寸偏差</td><td>整体失真，比例明显失调</td><td><div class="eval-radio"><label><input type="radio" name="e2"><span>A</span></label><label><input type="radio" name="e2"><span>B</span></label><label><input type="radio" name="e2"><span>C</span></label></div></td></tr>
+        <tr><td>作品完整美观</td><td>结构稳固，细节丰富，外观整洁</td><td>结构基本稳固，缺失少量细节</td><td>结构松散，关键部件缺失</td><td><div class="eval-radio"><label><input type="radio" name="e3"><span>A</span></label><label><input type="radio" name="e3"><span>B</span></label><label><input type="radio" name="e3"><span>C</span></label></div></td></tr>
+        <tr><td>过程记录完整性</td><td>数据记录完整，说明书规范详实</td><td>具备基础过程记录</td><td>记录混乱，说明书缺失</td><td><div class="eval-radio"><label><input type="radio" name="e4"><span>A</span></label><label><input type="radio" name="e4"><span>B</span></label><label><input type="radio" name="e4"><span>C</span></label></div></td></tr>
+        <tr><td>小组协作分工</td><td>分工清晰，全员参与协作</td><td>有基础分工，配合一般</td><td>分工模糊，参与度低</td><td><div class="eval-radio"><label><input type="radio" name="e5"><span>A</span></label><label><input type="radio" name="e5"><span>B</span></label><label><input type="radio" name="e5"><span>C</span></label></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 五、总结与反思 -->
+  <div class="section">
+    <h2><span class="num">五</span>总结与反思</h2>
+    <div class="reflection-box"><label>本次项目的收获</label><textarea placeholder="在知识、技能、协作等方面有哪些收获……"></textarea></div>
+    <div class="reflection-box"><label>遇到的困难及改进思路</label><textarea placeholder="遇到了什么困难？下次可以怎样改进……"></textarea></div>
+  </div>
+
+  <div class="print-bar">
+    <button class="btn-print" onclick="window.print()">🖨️ 打印 / 导出为PDF</button>
+  </div>
+</div>
+
+<script>
+// 添加行
+function addRow(tableId){
+  const tbody=document.querySelector('#'+tableId+' tbody');
+  const firstRow=tbody.querySelector('tr');
+  const newRow=firstRow.cloneNode(true);
+  newRow.querySelectorAll('input,textarea,select').forEach(el=>el.value='');
+  tbody.appendChild(newRow);
+}
+
+// 删除行，至少保留一行
+function delRow(btn,tableId){
+  const tr = btn.closest('tr');
+  const tbody = document.querySelector('#'+tableId+' tbody');
+  if(tbody.rows.length <= 1){
+    alert('表格至少保留一行数据，不能全部删除！');
+    return;
+  }
+  tbody.removeChild(tr);
+}
+
+function previewFiles(input,previewId){
+  const preview=document.getElementById(previewId);
+  preview.innerHTML='';
+  Array.from(input.files).forEach(file=>{
+    if(file.type.startsWith('image/')){
+      const img=document.createElement('img');
+      img.src=URL.createObjectURL(file);
+      preview.appendChild(img);
+    }else{
+      const chip=document.createElement('div');
+      chip.className='file-chip';
+      chip.textContent='📄 '+file.name;
+      preview.appendChild(chip);
+    }
+  });
+}
+
+function calcModelScale(){
+  const real=parseFloat(document.getElementById('b-real-h').value)||0;
+  const model=parseFloat(document.getElementById('b-model-h').value)||0;
+  const result=document.getElementById('model-scale-result');
+  if(real<=0||model<=0){result.textContent='请输入有效的数据';return}
+  const ratio=real*100/model;
+  const nice=[50,100,200,250,500,1000,1500,2000];
+  let rec=nice.find(s=>s>=ratio)||Math.ceil(ratio/50)*50;
+  const actualH=(real*100/rec).toFixed(1);
+  result.innerHTML=`推荐缩放比例：<strong>1 : ${rec}</strong>（模型1cm代表实际${rec/100}m）<br>按此比例模型高度约为 <strong>${actualH} cm</strong>（目标 ${model}cm）。`;
+}
+['b-real-h','b-model-h'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',calcModelScale);
+});
+calcModelScale();
+</script>
+</body>
+</html>
