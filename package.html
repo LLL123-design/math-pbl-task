@@ -13,77 +13,101 @@
     --danger:#c53030;
     --danger-dark:#9b2c2c;
     --text:#2d3748;
+    --label:#1a202c;
     --muted:#718096;
     --border:#e2e8f0;
     --bg:#f7fafc;
     --card:#ffffff;
+    --input-bg:#f7fafc;
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
   body{font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
   .container{max-width:960px;margin:0 auto;padding:24px 16px 60px}
 
-  .header{text-align:center;padding:32px 20px 24px;background:linear-gradient(135deg,#2f855a,#276749);color:#fff;border-radius:14px;margin-bottom:24px;box-shadow:0 4px 16px rgba(47,133,90,.2)}
+  .header{text-align:center;padding:32px 20px 24px;background:linear-gradient(135deg,#2f855a,#276749);color:#fff;border-radius:14px;margin-bottom:20px;box-shadow:0 4px 16px rgba(47,133,90,.2)}
   .header h1{font-size:24px;font-weight:700;letter-spacing:1px}
   .header p{font-size:14px;opacity:.85;margin-top:8px}
 
-  .project-title{text-align:center;font-size:22px;font-weight:700;color:var(--accent);margin-bottom:6px}
-  .project-subtitle{text-align:center;color:var(--muted);font-size:14px;margin-bottom:20px}
+  .nav-box{background:var(--card);border-radius:12px;padding:18px 22px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  .nav-box .nav-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px dashed var(--border)}
+  .nav-box .nav-head span{font-size:16px;font-weight:700;color:var(--primary)}
+  .nav-box .nav-head em{font-style:normal;font-size:12px;color:var(--muted);margin-left:auto}
+  .nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+  .nav-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;background:var(--bg);text-decoration:none;color:var(--text);font-size:13px;transition:all .15s;border:1px solid transparent}
+  .nav-item:hover{background:var(--primary-light);color:var(--primary);border-color:#bee3f8;transform:translateY(-1px)}
+  .nav-item .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0}
+  .nav-item.sub{background:transparent;padding-left:14px;font-size:12px;color:var(--muted)}
+  .nav-item.sub .dot{width:5px;height:5px;background:var(--muted)}
+  .nav-item.sub:hover{background:var(--primary-light);color:var(--primary)}
 
-  .section{background:var(--card);border-radius:12px;padding:24px 28px;margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.05);border-left:4px solid var(--accent)}
-  .section h2{font-size:19px;color:var(--accent);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--accent-light);display:flex;align-items:center;gap:8px}
+  .section{background:var(--card);border-radius:12px;padding:20px 28px 24px;margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.05);border-left:4px solid var(--accent)}
+  .section h2{font-size:19px;color:var(--accent);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--accent-light);display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+  .section h2 .sec-arrow{display:inline-block;transition:transform .25s;font-size:11px;color:var(--accent);width:14px;text-align:center}
+  .section h2.collapsed .sec-arrow{transform:rotate(-90deg)}
   .section h2 .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--accent);color:#fff;border-radius:50%;font-size:14px}
+  .section-body.collapsed{display:none}
+
+  .task-title{font-size:16px;color:var(--text);margin:18px 0 10px;padding:10px 16px;background:var(--primary-light);border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;user-select:none;transition:background .15s}
+  .task-title:hover{background:#dbeafe}
+  .task-title .arrow{display:inline-block;transition:transform .25s;font-size:11px;color:var(--primary);width:14px;text-align:center}
+  .task-title.collapsed .arrow{transform:rotate(-90deg)}
+  .task-body{overflow:hidden;transition:max-height .3s ease}
+  .task-body.collapsed{display:none}
+
   .section h3{font-size:16px;color:var(--text);margin:18px 0 10px;padding-left:10px;border-left:3px solid var(--primary)}
   .section p{margin-bottom:10px;color:#4a5568}
 
   .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
-  .info-item label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
-  .info-item input{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;background:#fff}
-  .info-item input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+  .info-item label{display:block;font-size:14px;color:var(--label);font-weight:600;margin-bottom:4px}
+  .info-item input{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;background:var(--input-bg);color:var(--text)}
+  .info-item input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
+  .info-item input::placeholder{color:#a0aec0}
+  .date-wrap{position:relative}
+  .info-item .date-display{position:relative;z-index:1;width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;background:var(--input-bg);color:var(--text)}
+  .info-item .date-display:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
+  .info-item .date-display::placeholder{color:#a0aec0}
+  .info-item .date-picker{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2;border:none!important;padding:0!important;margin:0!important;background:transparent!important;font-size:16px}
+  .info-item .date-picker::-webkit-calendar-picker-indicator{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0;padding:0}
+  .info-item .date-picker::-webkit-inner-spin-button{display:none}
 
   table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
-  th,td{border:1px solid var(--border);padding:9px 10px;text-align:left;vertical-align:top}
+  th,td{border:1px solid var(--border);padding:9px 10px;text-align:center;vertical-align:middle}
   th{background:var(--accent-light);color:var(--accent);font-weight:600}
-  td input,td textarea{width:100%;border:none;outline:none;font-size:14px;background:transparent;font-family:inherit;resize:vertical}
+  td input,td textarea{width:100%;border:none;outline:none;font-size:14px;background:transparent;font-family:inherit;resize:vertical;color:var(--text);text-align:center}
+  td input::placeholder,td textarea::placeholder{color:#a0aec0;text-align:center}
   td textarea{min-height:36px}
 
-  .btn-plus{
-    display:inline-flex;align-items:center;gap:4px;
-    padding:6px 14px;background:var(--primary);color:#fff;
-    border:none;border-radius:6px;cursor:pointer;font-size:13px;margin-top:8px;
-  }
+  .btn-plus{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;background:var(--primary);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;margin-top:8px}
   .btn-plus:hover{background:#2c5282}
-
-  .btn-minus{
-    background:var(--danger);color:#fff;border:none;
-    border-radius:4px;padding:3px 8px;font-size:14px;cursor:pointer;
-  }
+  .btn-minus{background:var(--danger);color:#fff;border:none;border-radius:4px;padding:3px 8px;font-size:14px;cursor:pointer}
   .btn-minus:hover{background:var(--danger-dark)}
 
   .stage{background:#fafbfc;border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:14px 0}
   .stage-tag{display:inline-block;background:var(--accent);color:#fff;font-size:12px;padding:3px 10px;border-radius:12px;margin-bottom:8px}
   .stage ol{padding-left:22px;margin:8px 0}
-  .stage ol li{margin-bottom:6px;color:#4a5568}
+  .stage ol li{margin-bottom:6px;color:#4a5568;text-align:left}
 
   .tool-box{background:linear-gradient(135deg,#ebf8ff,#f0fff4);border:1px dashed #4299e1;border-radius:10px;padding:18px 20px;margin:16px 0}
   .tool-box h4{color:var(--primary);font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
   .tool-row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:10px}
   .tool-row .field{flex:1;min-width:140px}
-  .tool-row label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+  .tool-row label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px;text-align:left}
   .tool-row input{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:14px}
-  .tool-result{background:#fff;padding:12px 16px;border-radius:6px;margin-top:10px;font-size:14px;border-left:3px solid var(--primary)}
+  .tool-result{background:#fff;padding:12px 16px;border-radius:6px;margin-top:10px;font-size:14px;border-left:3px solid var(--primary);text-align:left}
   .tool-result strong{color:var(--primary)}
 
   .upload-area{border:2px dashed var(--border);border-radius:8px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:#fafbfc}
   .upload-area:hover{border-color:var(--accent);background:var(--accent-light)}
   .upload-area .icon{font-size:32px;color:var(--muted)}
   .upload-area p{color:var(--muted);font-size:13px;margin-top:6px}
-  .upload-preview{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px}
+  .upload-preview{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
   .upload-preview img{max-width:160px;max-height:120px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
   .upload-preview .file-chip{background:var(--accent-light);color:var(--accent);padding:6px 12px;border-radius:6px;font-size:13px;display:flex;align-items:center;gap:6px}
 
   .eval-table th{text-align:center}
   .eval-table td{text-align:center;vertical-align:middle}
-  .eval-table td:first-child{text-align:left;font-weight:500}
+  .eval-table td:first-child{text-align:center;font-weight:500}
   .eval-radio{display:flex;justify-content:center;gap:6px}
   .eval-radio label{cursor:pointer}
   .eval-radio input{display:none}
@@ -91,27 +115,37 @@
   .eval-radio span{display:inline-block;padding:4px 10px;border-radius:4px;font-size:13px;border:1px solid var(--border)}
 
   .reflection-box{margin-bottom:14px}
-  .reflection-box label{display:block;font-weight:600;color:var(--text);margin-bottom:6px;font-size:14px}
-  .reflection-box textarea{width:100%;min-height:90px;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:inherit;resize:vertical;line-height:1.7}
-  .reflection-box textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+  .reflection-box label{display:block;font-weight:600;color:var(--label);margin-bottom:6px;font-size:14px;text-align:left}
+  .reflection-box textarea{width:100%;min-height:90px;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:inherit;resize:vertical;line-height:1.7;background:var(--input-bg)}
+  .reflection-box textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
 
-  .print-bar{text-align:center;margin-top:20px}
+  .print-bar{text-align:center;margin-top:20px;display:flex;gap:15px;justify-content:center}
   .btn-print{padding:10px 28px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:600;box-shadow:0 2px 8px rgba(47,133,90,.25)}
   .btn-print:hover{background:#276749}
+  .btn-save{padding:10px 28px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:600}
+  .btn-save:hover{background:#2c5282}
+  .btn-submit{padding:10px 28px;background:#3182ce;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:600}
+  .btn-submit:hover{background:#2b6cb0}
 
   .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
   .tag{background:var(--accent-light);color:var(--accent);padding:4px 12px;border-radius:14px;font-size:13px}
   .tag.blue{background:var(--primary-light);color:var(--primary)}
 
+  .rule-textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:14px;resize:vertical;margin-top:10px;min-height:80px;background:var(--input-bg)}
+  .rule-textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
+
   @media print{
     body{background:#fff}
-    .btn-print,.btn-plus,.btn-minus,.upload-area{display:none!important}
+    .nav-box,.btn-print,.btn-plus,.btn-minus,.upload-area,.btn-save,.btn-submit,.task-title .arrow,.section h2 .sec-arrow{display:none!important}
+    .task-body,.section-body{display:block!important}
     .section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
     .header{background:#2f855a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   }
   @media(max-width:640px){
     .info-grid{grid-template-columns:1fr}
-    .section{padding:18px 16px}
+    .section{padding:16px 16px 20px}
+    .print-bar{flex-direction:column;align-items:center}
+    .nav-grid{grid-template-columns:1fr 1fr}
   }
 </style>
 </head>
@@ -119,307 +153,290 @@
 <div class="container">
 
   <div class="header">
-    <h1>华东师大版 · 七年级上册数学</h1>
-    <p>项目式学习任务单（PBL Task Sheet）</p>
+    <h1>包装中的智慧 · 项目学习任务单</h1>
+    <p>从几何奥秘到环保创新，解码包装盒里的数学</p>
   </div>
 
-  <div class="project-title">包装中的智慧 · 项目学习任务单</div>
-  <div class="project-subtitle">从几何奥秘到环保创新，解码包装盒里的数学</div>
+  <div class="nav-box">
+    <div class="nav-head">
+      <span>📑 目录导航</span>
+      <em>点击跳转对应章节</em>
+    </div>
+    <div class="nav-grid">
+      <a class="nav-item" href="#sec1" onclick="expandSection('sec1')"><span class="dot"></span>一、基础信息</a>
+      <a class="nav-item" href="#sec2" onclick="expandSection('sec2')"><span class="dot"></span>二、项目简介</a>
+      <a class="nav-item" href="#sec3" onclick="expandSection('sec3')"><span class="dot"></span>三、项目进程</a>
+      <a class="nav-item sub" href="#task1" onclick="expandSection('sec3');expandTask('task1')"><span class="dot"></span>任务一·几何奥秘</a>
+      <a class="nav-item sub" href="#task2" onclick="expandSection('sec3');expandTask('task2')"><span class="dot"></span>任务二·垃圾调研</a>
+      <a class="nav-item sub" href="#task3" onclick="expandSection('sec3');expandTask('task3')"><span class="dot"></span>任务三·创新设计</a>
+      <a class="nav-item" href="#sec4" onclick="expandSection('sec4')"><span class="dot"></span>四、自我评价</a>
+      <a class="nav-item" href="#sec5" onclick="expandSection('sec5')"><span class="dot"></span>五、总结反思</a>
+    </div>
+  </div>
 
   <!-- 一、基础信息 -->
-  <div class="section">
-    <h2><span class="num">一</span>基础信息</h2>
-    <div class="info-grid">
-      <div class="info-item"><label>姓名</label><input type="text" placeholder="请填写姓名"></div>
-      <div class="info-item"><label>班级</label><input type="text" placeholder="如：七年级1班"></div>
-      <div class="info-item"><label>填写日期</label><input type="date"></div>
+  <div class="section" id="sec1">
+    <h2 id="sec1-title" onclick="toggleSection('sec1')"><span class="sec-arrow">▼</span><span class="num">一</span>基础信息</h2>
+    <div class="section-body" id="sec1-body">
+      <div class="info-grid">
+        <div class="info-item"><label>姓名</label><input type="text" placeholder="请填写姓名"></div>
+        <div class="info-item"><label>班级</label><input type="text" placeholder="如：七年级1班"></div>
+        <div class="info-item"><label>填写日期</label><div class="date-wrap"><input type="text" class="date-display" placeholder="年/月/日" readonly><input type="date" class="date-picker" onchange="setDateDisplay(this)" onclick="try{this.showPicker()}catch(e){}" onfocus="try{this.showPicker()}catch(e){}"></div></div>
+      </div>
+      <h3>团队分工情况</h3>
+      <table id="team-table">
+        <thead><tr><th style="width:30%">成员姓名</th><th>承担任务</th><th style="width:80px">操作</th></tr></thead>
+        <tbody>
+          <tr><td><input type="text" placeholder="如：张三"></td><td><input type="text" placeholder="如：数据测量"></td><td><button class="btn-minus" onclick="delRow(this,'team-table')">➖</button></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><button class="btn-minus" onclick="delRow(this,'team-table')">➖</button></td></tr>
+        </tbody>
+      </table>
+      <button class="btn-plus" onclick="addRow('team-table')">➕ 添加成员</button>
     </div>
-    <h3>团队分工情况</h3>
-    <table id="team-table">
-      <thead><tr><th style="width:30%">成员姓名</th><th>承担任务</th><th style="width:80px">操作</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><input type="text"></td>
-          <td><input type="text"></td>
-          <td><button class="btn-minus" onclick="delRow(this,'team-table')">➖</button></td>
-        </tr>
-        <tr>
-          <td><input type="text"></td>
-          <td><input type="text"></td>
-          <td><button class="btn-minus" onclick="delRow(this,'team-table')">➖</button></td>
-        </tr>
-      </tbody>
-    </table>
-    <button class="btn-plus" onclick="addRow('team-table')">➕ 添加成员</button>
   </div>
 
   <!-- 二、项目简介 -->
-  <div class="section">
-    <h2><span class="num">二</span>项目简介</h2>
-    <h3>项目背景</h3>
-    <p>商品包装盒是日常生活中随处可见的物品，其外观造型、尺寸设计、材料选用、结构搭建中蕴含丰富的初中几何与统计知识。商家在包装盒设计中，兼顾实用性、经济性、美观性与环保性，力求实现用料最省、结构最优、颜值最佳的设计目标。同时，大量包装垃圾带来的环境问题不容忽视。</p>
-    <p>本次项目引导同学们活用表面积、体积、立体展开图等数学知识，结合环保、美术等跨学科知识，探究包装设计的数学原理与生态价值，培养数据分析、实践创新、环保思辨能力。</p>
-
-    <h3>项目目标</h3>
-    <p>1. 掌握立体图形表面积、体积、表面展开图的几何知识；</p>
-    <p>2. 熟练运用数据统计、图表绘制、单位换算、实物测量、图纸绘制等技能；</p>
-    <p>3. 掌握最优方案对比、数据分析、误差分析的基本方法；</p>
-    <p>4. 了解包装材质特性、垃圾分类标准，培养环保意识与创新设计能力。</p>
-
-    <h3>涉及知识</h3>
-    <div class="tag-list">
-      <span class="tag">立体图形表面积</span>
-      <span class="tag">体积计算</span>
-      <span class="tag">表面展开图</span>
-      <span class="tag">数据统计与图表</span>
-      <span class="tag">最优方案对比</span>
-      <span class="tag blue">生态·垃圾分类</span>
-      <span class="tag blue">化工·材质特性</span>
-      <span class="tag blue">美术·造型设计</span>
+  <div class="section" id="sec2">
+    <h2 id="sec2-title" onclick="toggleSection('sec2')"><span class="sec-arrow">▼</span><span class="num">二</span>项目简介</h2>
+    <div class="section-body" id="sec2-body">
+      <h3>项目背景</h3>
+      <p>商品包装盒是日常生活中随处可见的物品，其外观造型、尺寸设计、材料选用、结构搭建中蕴含丰富的初中几何与统计知识。商家在包装盒设计中，兼顾实用性、经济性、美观性与环保性，力求实现用料最省、结构最优、颜值最佳的设计目标。同时，大量包装垃圾带来的环境问题不容忽视。</p>
+      <p>本次项目引导同学们活用表面积、体积、立体展开图等数学知识，结合环保、美术等跨学科知识，探究包装设计的数学原理与生态价值，培养数据分析、实践创新、环保思辨能力。</p>
+      <h3>项目目标</h3>
+      <p>1. 掌握立体图形表面积、体积、表面展开图的几何知识；</p>
+      <p>2. 熟练运用数据统计、图表绘制、单位换算、实物测量、图纸绘制等技能；</p>
+      <p>3. 掌握最优方案对比、数据分析、误差分析的基本方法；</p>
+      <p>4. 了解包装材质特性、垃圾分类标准，培养环保意识与创新设计能力。</p>
+      <h3>涉及知识</h3>
+      <div class="tag-list">
+        <span class="tag">立体图形表面积</span>
+        <span class="tag">体积计算</span>
+        <span class="tag">表面展开图</span>
+        <span class="tag">数据统计与图表</span>
+        <span class="tag">最优方案对比</span>
+        <span class="tag blue">生态·垃圾分类</span>
+        <span class="tag blue">化工·材质特性</span>
+        <span class="tag blue">美术·造型设计</span>
+      </div>
     </div>
   </div>
 
   <!-- 三、项目进程 -->
-  <div class="section">
-    <h2><span class="num">三</span>项目进程</h2>
+  <div class="section" id="sec3">
+    <h2 id="sec3-title" onclick="toggleSection('sec3')"><span class="sec-arrow">▼</span><span class="num">三</span>项目进程</h2>
+    <div class="section-body" id="sec3-body">
 
-    <!-- 任务一 -->
-    <h3>任务一：探究包装盒中的几何奥秘</h3>
-
-    <div class="stage">
-      <span class="stage-tag">阶段一：分类统计</span>
-      <ol>
-        <li>收集生活中的各类商品包装盒，按几何外形进行分类。</li>
-        <li>运用统计知识统计不同形状包装盒的市场占比，借助图表呈现数据规律。</li>
-      </ol>
-      <table id="pkg-class-table">
-        <thead><tr><th>几何形状</th><th>数量（个）</th><th>占比（%）</th><th>代表商品</th><th style="width:80px">操作</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><input type="text" placeholder="如：长方体"></td>
-            <td><input type="number"></td>
-            <td><input type="number"></td>
-            <td><input type="text"></td>
-            <td><button class="btn-minus" onclick="delRow(this,'pkg-class-table')">➖</button></td>
-          </tr>
-          <tr>
-            <td><input type="text"></td>
-            <td><input type="number"></td>
-            <td><input type="number"></td>
-            <td><input type="text"></td>
-            <td><button class="btn-minus" onclick="delRow(this,'pkg-class-table')">➖</button></td>
-          </tr>
-        </tbody>
-      </table>
-      <button class="btn-plus" onclick="addRow('pkg-class-table')">➕ 添加类别</button>
-    </div>
-
-    <div class="stage">
-      <span class="stage-tag">阶段二：拆解探究</span>
-      <ol>
-        <li>拆解不同形状的包装盒，对比同类、不同类包装盒的表面展开图差异。</li>
-        <li>绘制各类包装盒的标准展开图，总结立体图形与平面展开图的对应规律。</li>
-      </ol>
-      <table id="pkg-unfold-table">
-        <thead><tr><th>包装盒名称</th><th>立体形状</th><th>展开图类型</th><th>面数</th><th>规律总结</th><th style="width:80px">操作</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="number"></td>
-            <td><input type="text"></td>
-            <td><button class="btn-minus" onclick="delRow(this,'pkg-unfold-table')">➖</button></td>
-          </tr>
-          <tr>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="number"></td>
-            <td><input type="text"></td>
-            <td><button class="btn-minus" onclick="delRow(this,'pkg-unfold-table')">➖</button></td>
-          </tr>
-        </tbody>
-      </table>
-      <button class="btn-plus" onclick="addRow('pkg-unfold-table')">➕ 添加记录</button>
-    </div>
-
-    <div class="stage">
-      <span class="stage-tag">阶段三：归纳分析</span>
-      <p>结合分类与拆解结果，从结构稳定性、组装便捷性、设计简洁性、存储运输实用性等角度，分析不同几何形状包装盒的优缺点，解释主流包装造型的选用原因。</p>
-      <textarea rows="4" placeholder="在此撰写归纳分析……" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:14px;resize:vertical;margin-top:8px"></textarea>
-    </div>
-
-    <!-- 任务二 -->
-    <h3>任务二：包装垃圾的调研与反思</h3>
-
-    <div class="stage">
-      <span class="stage-tag">阶段一：材质分类</span>
-      <ol>
-        <li>统计各类包装盒的制作材质，依据垃圾分类标准对包装垃圾进行归类。</li>
-        <li>分析商家选用各类包装材质的原因与利弊。</li>
-      </ol>
-      <table id="pkg-material-table">
-        <thead><tr><th>材质类型</th><th>垃圾类别</th><th>常见商品</th><th>选用原因</th><th>弊端</th><th style="width:80px">操作</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><input type="text" placeholder="如：瓦楞纸"></td>
-            <td><input type="text" placeholder="可回收物"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><button class="btn-minus" onclick="delRow(this,'pkg-material-table')">➖</button></td>
-          </tr>
-          <tr>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><button class="btn-minus" onclick="delRow(this,'pkg-material-table')">➖</button></td>
-          </tr>
-        </tbody>
-      </table>
-      <button class="btn-plus" onclick="addRow('pkg-material-table')">➕ 添加材质</button>
-    </div>
-
-    <div class="stage">
-      <span class="stage-tag">阶段二：数据统计</span>
-      <ol>
-        <li>选定家庭、学校等固定场所，从体积、面积、质量等维度统计单位时间内的包装垃圾产生量。</li>
-        <li>结合几何与统计知识，用数据、图表直观呈现包装垃圾产生现状。</li>
-      </ol>
-      <table id="pkg-waste-table">
-        <thead><tr><th>统计场所</th><th>时间范围</th><th>数量(个)</th><th>总体积(L)</th><th>总质量(kg)</th><th style="width:80px">操作</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><input type="text"></td>
-            <td><input type="text" placeholder="如：一周"></td>
-            <td><input type="number"></td>
-            <td><input type="number"></td>
-            <td><input type="number"></td>
-            <td><button class="btn-minus" onclick="delRow(this,'pkg-waste-table')">➖</button></td>
-          </tr>
-          <tr>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="number"></td>
-            <td><input type="number"></td>
-            <td><input type="number"></td>
-            <td><button class="btn-minus" onclick="delRow(this,'pkg-waste-table')">➖</button></td>
-          </tr>
-        </tbody>
-      </table>
-      <button class="btn-plus" onclick="addRow('pkg-waste-table')">➕ 添加统计</button>
-    </div>
-
-    <div class="stage">
-      <span class="stage-tag">阶段三：撰写调研报告</span>
-      <p>结合调研数据，分析包装垃圾对环境的影响，从商家生产、商场销售、消费者使用、垃圾处理等角度，提出针对性的环保改进建议，完成完整的调研研究报告。</p>
-      <div class="upload-area" onclick="document.getElementById('upload-1').click()">
-        <div class="icon">📁</div>
-        <p>点击上传包装垃圾调研研究报告（文件或图片均可）</p>
-        <input type="file" id="upload-1" multiple accept="image/*,.pdf,.doc,.docx" style="display:none" onchange="previewFiles(this,'preview-1')">
+      <div class="task-title" id="task1" onclick="toggleTask('task1')">
+        <span class="arrow">▼</span> 任务一：探究包装盒中的几何奥秘
       </div>
-      <div class="upload-preview" id="preview-1"></div>
-    </div>
-
-    <!-- 任务三 -->
-    <h3>任务三：包装盒的创新设计与制作</h3>
-
-    <div class="stage">
-      <span class="stage-tag">阶段一：选题定位</span>
-      <ol>
-        <li>结合前期调研，发现现有商品包装的缺陷（用料浪费、造型不合理、不环保、运输不便等）。</li>
-        <li>选定一款商品，明确商品形态、尺寸、特性，确定包装盒设计规格。</li>
-      </ol>
-      <div class="info-grid" style="grid-template-columns:1fr 1fr">
-        <div class="info-item"><label>选定商品</label><input type="text" placeholder="如：手工皂"></div>
-        <div class="info-item"><label>现有包装缺陷</label><input type="text" placeholder="如：过度包装、不可降解"></div>
-        <div class="info-item"><label>商品尺寸(长×宽×高 cm)</label><input type="text" placeholder="如：8×5×3"></div>
-        <div class="info-item"><label>设计目标</label><input type="text" placeholder="如：用料最省、可回收"></div>
-      </div>
-    </div>
-
-    <div class="stage">
-      <span class="stage-tag">阶段二：方案设计</span>
-      <ol>
-        <li>围绕节约用料、便于存储运输、安全环保、外观美观等设计理念，规划包装盒几何造型。</li>
-        <li>绘制精准的包装盒平面展开设计图，确定制作材料与制作方案。</li>
-      </ol>
-
-      <div class="tool-box">
-        <h4>📐 交互式辅助工具：长方体包装盒用料计算</h4>
-        <div class="tool-row">
-          <div class="field"><label>长（cm）</label><input type="number" id="box-l" value="10" min="0.1" step="0.1"></div>
-          <div class="field"><label>宽（cm）</label><input type="number" id="box-w" value="6" min="0.1" step="0.1"></div>
-          <div class="field"><label>高（cm）</label><input type="number" id="box-h" value="4" min="0.1" step="0.1"></div>
-          <div class="field"><label>粘合余量（cm）</label><input type="number" id="box-glue" value="1" min="0" step="0.1"></div>
+      <div class="task-body" id="task1-body">
+        <div class="stage">
+          <span class="stage-tag">阶段一：分类统计</span>
+          <ol><li>收集生活中的各类商品包装盒，按几何外形进行分类。</li><li>运用统计知识统计不同形状包装盒的市场占比，借助图表呈现数据规律。</li></ol>
+          <table id="pkg-class-table">
+            <thead><tr><th>几何形状</th><th>数量（个）</th><th>占比（%）</th><th>代表商品</th><th style="width:80px">操作</th></tr></thead>
+            <tbody>
+              <tr><td><input type="text" placeholder="如：长方体"></td><td><input type="number"></td><td><input type="number"></td><td><input type="text"></td><td><button class="btn-minus" onclick="delRow(this,'pkg-class-table')">➖</button></td></tr>
+              <tr><td><input type="text"></td><td><input type="number"></td><td><input type="number"></td><td><input type="text"></td><td><button class="btn-minus" onclick="delRow(this,'pkg-class-table')">➖</button></td></tr>
+            </tbody>
+          </table>
+          <button class="btn-plus" onclick="addRow('pkg-class-table')">➕ 添加类别</button>
         </div>
-        <div class="tool-result" id="box-result">请输入数据后查看计算结果</div>
+        <div class="stage">
+          <span class="stage-tag">阶段二：拆解探究</span>
+          <ol><li>拆解不同形状的包装盒，对比同类、不同类包装盒的表面展开图差异。</li><li>绘制各类包装盒的标准展开图。</li></ol>
+          <table id="pkg-unfold-table">
+            <thead><tr><th>包装盒名称</th><th>立体形状</th><th>展开图类型</th><th>面数</th><th>规律总结</th><th style="width:80px">操作</th></tr></thead>
+            <tbody>
+              <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="number"></td><td><input type="text"></td><td><button class="btn-minus" onclick="delRow(this,'pkg-unfold-table')">➖</button></td></tr>
+              <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="number"></td><td><input type="text"></td><td><button class="btn-minus" onclick="delRow(this,'pkg-unfold-table')">➖</button></td></tr>
+            </tbody>
+          </table>
+          <button class="btn-plus" onclick="addRow('pkg-unfold-table')">➕ 添加记录</button>
+        </div>
+        <div class="stage">
+          <span class="stage-tag">阶段三：归纳分析</span>
+          <p>结合分类与拆解结果，总结立体图形与平面展开图的对应规律，同时从结构稳定性、组装便捷性、设计简洁性、存储运输实用性等角度，分析不同几何形状包装盒的优缺点，解释主流包装造型的选用原因。</p>
+          <textarea rows="4" placeholder="在此撰写归纳分析与立体图形、平面展开图对应规律……" class="rule-textarea"></textarea>
+        </div>
       </div>
-    </div>
 
-    <div class="stage">
-      <span class="stage-tag">阶段三：成品制作与提交</span>
-      <ol>
-        <li>兼顾环保、成本、产品适配性，选用合适材料，依据设计图纸裁剪、拼接、组装。</li>
-        <li>保证结构稳固、尺寸精准、设计合理，完成原创包装盒成品。</li>
-      </ol>
-      <div class="upload-area" onclick="document.getElementById('upload-2').click()">
-        <div class="icon">📁</div>
-        <p>点击上传原创包装盒成品照片与设计说明书</p>
-        <input type="file" id="upload-2" multiple accept="image/*,.pdf" style="display:none" onchange="previewFiles(this,'preview-2')">
+      <div class="task-title" id="task2" onclick="toggleTask('task2')">
+        <span class="arrow">▼</span> 任务二：包装垃圾的调研与反思
       </div>
-      <div class="upload-preview" id="preview-2"></div>
-      <h4 style="margin-top:14px;font-size:14px;color:var(--text)">包装盒设计说明书摘要</h4>
-      <textarea rows="3" placeholder="说明设计理念、几何造型、尺寸、材料、创新点……" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:14px;resize:vertical"></textarea>
-    </div>
+      <div class="task-body" id="task2-body">
+        <div class="stage">
+          <span class="stage-tag">阶段一：材质分类</span>
+          <ol><li>统计各类包装盒的制作材质，依据垃圾分类标准对包装垃圾进行归类。</li><li>分析商家选用各类包装材质的原因与利弊。</li></ol>
+          <table id="pkg-material-table">
+            <thead><tr><th>材质类型</th><th>垃圾类别</th><th>常见商品</th><th>选用原因</th><th>弊端</th><th style="width:80px">操作</th></tr></thead>
+            <tbody>
+              <tr><td><input type="text" placeholder="如：瓦楞纸"></td><td><input type="text" placeholder="如：可回收物"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="btn-minus" onclick="delRow(this,'pkg-material-table')">➖</button></td></tr>
+              <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="btn-minus" onclick="delRow(this,'pkg-material-table')">➖</button></td></tr>
+            </tbody>
+          </table>
+          <button class="btn-plus" onclick="addRow('pkg-material-table')">➕ 添加材质</button>
+        </div>
+        <div class="stage">
+          <span class="stage-tag">阶段二：数据统计</span>
+          <ol><li>选定家庭、学校等固定场所，从体积、面积、质量等维度统计单位时间内的包装垃圾产生量。</li><li>结合几何与统计知识，用数据、图表直观呈现包装垃圾产生现状。</li></ol>
+          <table id="pkg-waste-table">
+            <thead><tr><th>统计场所</th><th>时间范围</th><th>数量(个)</th><th>总体积(L)</th><th>总质量(kg)</th><th style="width:80px">操作</th></tr></thead>
+            <tbody>
+              <tr><td><input type="text"></td><td><input type="text" placeholder="如：一周"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><button class="btn-minus" onclick="delRow(this,'pkg-waste-table')">➖</button></td></tr>
+              <tr><td><input type="text"></td><td><input type="text"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><button class="btn-minus" onclick="delRow(this,'pkg-waste-table')">➖</button></td></tr>
+            </tbody>
+          </table>
+          <button class="btn-plus" onclick="addRow('pkg-waste-table')">➕ 添加统计</button>
+        </div>
+        <div class="stage">
+          <span class="stage-tag">阶段三：撰写调研报告</span>
+          <p>结合调研数据，分析包装垃圾对环境的影响，从商家生产、商场销售、消费者使用、垃圾处理等角度，提出针对性的环保改进建议，完成完整的调研研究报告。</p>
+          <div class="upload-area" onclick="document.getElementById('upload-1').click()">
+            <div class="icon">📁</div>
+            <p>点击上传包装垃圾调研研究报告（文件或图片均可）</p>
+            <input type="file" id="upload-1" multiple accept="image/*,.pdf,.doc,.docx" style="display:none" onchange="previewFiles(this,'preview-1')">
+          </div>
+          <div class="upload-preview" id="preview-1"></div>
+        </div>
+      </div>
 
-    <p style="margin-top:14px;padding:10px 14px;background:var(--accent-light);border-radius:6px;font-size:14px"><strong>成果形式：</strong>包装垃圾调研研究报告、原创包装盒成品、包装盒设计说明书。</p>
+      <div class="task-title" id="task3" onclick="toggleTask('task3')">
+        <span class="arrow">▼</span> 任务三：包装盒的创新设计与制作
+      </div>
+      <div class="task-body" id="task3-body">
+        <div class="stage">
+          <span class="stage-tag">阶段一：选题定位</span>
+          <ol><li>结合前期调研，发现现有商品包装的缺陷（用料浪费、造型不合理、不环保、运输不便等）。</li><li>选定一款商品，明确商品形态、尺寸、特性，确定包装盒设计规格。</li></ol>
+          <div class="info-grid" style="grid-template-columns:1fr 1fr">
+            <div class="info-item"><label>选定商品</label><input type="text" placeholder="如：手工皂"></div>
+            <div class="info-item"><label>现有包装缺陷</label><input type="text" placeholder="如：过度包装、不可降解"></div>
+            <div class="info-item"><label>商品尺寸(长×宽×高 cm)</label><input type="text" placeholder="如：8×5×3"></div>
+            <div class="info-item"><label>设计目标</label><input type="text" placeholder="如：用料最省、可回收"></div>
+          </div>
+        </div>
+        <div class="stage">
+          <span class="stage-tag">阶段二：方案设计</span>
+          <ol><li>围绕节约用料、便于存储运输、安全环保、外观美观等设计理念，规划包装盒几何造型。</li><li>绘制精准的包装盒平面展开设计图，确定制作材料与制作方案。</li></ol>
+          <div class="tool-box">
+            <h4>📐 交互式辅助工具：长方体包装盒用料计算</h4>
+            <div class="tool-row">
+              <div class="field"><label>长（cm）</label><input type="number" id="box-l" value="10" min="0.1" step="0.1"></div>
+              <div class="field"><label>宽（cm）</label><input type="number" id="box-w" value="6" min="0.1" step="0.1"></div>
+              <div class="field"><label>高（cm）</label><input type="number" id="box-h" value="4" min="0.1" step="0.1"></div>
+              <div class="field"><label>粘合余量（cm）</label><input type="number" id="box-glue" value="1" min="0" step="0.1"></div>
+            </div>
+            <div class="tool-result" id="box-result">请输入数据后查看计算结果</div>
+          </div>
+        </div>
+        <div class="stage">
+          <span class="stage-tag">阶段三：成品制作与提交</span>
+          <ol><li>兼顾环保、成本、产品适配性，选用合适材料，依据设计图纸裁剪、拼接、组装。</li><li>保证结构稳固、尺寸精准、设计合理，完成原创包装盒成品。</li></ol>
+          <div class="upload-area" onclick="document.getElementById('upload-2').click()">
+            <div class="icon">📁</div>
+            <p>点击上传原创包装盒成品照片与设计说明书</p>
+            <input type="file" id="upload-2" multiple accept="image/*,.pdf" style="display:none" onchange="previewFiles(this,'preview-2')">
+          </div>
+          <div class="upload-preview" id="preview-2"></div>
+          <h4 style="margin-top:14px;font-size:14px;color:var(--text);text-align:left">包装盒设计说明书摘要</h4>
+          <textarea rows="3" placeholder="说明设计理念、几何造型、尺寸、材料、创新点……" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:14px;resize:vertical;background:var(--input-bg)"></textarea>
+        </div>
+        <p style="margin-top:14px;padding:10px 14px;background:var(--accent-light);border-radius:6px;font-size:14px;text-align:center"><strong>成果形式：</strong>包装垃圾调研研究报告、原创包装盒成品、包装盒设计说明书。</p>
+      </div>
+
+    </div>
   </div>
 
   <!-- 四、自我评价 -->
-  <div class="section">
-    <h2><span class="num">四</span>自我评价</h2>
-    <table class="eval-table">
-      <thead><tr><th style="width:22%">评价维度</th><th>优秀（A）</th><th>良好（B）</th><th>合格（C）</th><th style="width:120px">自我评分</th></tr></thead>
-      <tbody>
-        <tr><td>知识点运用</td><td>表面积/体积/展开图运用准确，计算无误</td><td>知识点基本正确，存在少量误差</td><td>多处概念、计算错误</td><td><div class="eval-radio"><label><input type="radio" name="e1"><span>A</span></label><label><input type="radio" name="e1"><span>B</span></label><label><input type="radio" name="e1"><span>C</span></label></div></td></tr>
-        <tr><td>调研数据分析</td><td>数据详实，统计图表规范，分析深入</td><td>有基础数据与分析，不够深入</td><td>数据缺失，分析流于表面</td><td><div class="eval-radio"><label><input type="radio" name="e2"><span>A</span></label><label><input type="radio" name="e2"><span>B</span></label><label><input type="radio" name="e2"><span>C</span></label></div></td></tr>
-        <tr><td>创新设计质量</td><td>造型新颖，结构稳固，尺寸精准，环保理念突出</td><td>设计合理，结构基本稳固</td><td>设计粗糙，结构不稳</td><td><div class="eval-radio"><label><input type="radio" name="e3"><span>A</span></label><label><input type="radio" name="e3"><span>B</span></label><label><input type="radio" name="e3"><span>C</span></label></div></td></tr>
-        <tr><td>过程记录完整性</td><td>数据记录完整清晰，报告规范</td><td>具备基础过程记录</td><td>记录混乱，存在大量空白</td><td><div class="eval-radio"><label><input type="radio" name="e4"><span>A</span></label><label><input type="radio" name="e4"><span>B</span></label><label><input type="radio" name="e4"><span>C</span></label></div></td></tr>
-        <tr><td>小组协作分工</td><td>分工清晰，全员参与协作</td><td>有基础分工，配合一般</td><td>分工模糊，参与度低</td><td><div class="eval-radio"><label><input type="radio" name="e5"><span>A</span></label><label><input type="radio" name="e5"><span>B</span></label><label><input type="radio" name="e5"><span>C</span></label></div></td></tr>
-      </tbody>
-    </table>
+  <div class="section" id="sec4">
+    <h2 id="sec4-title" onclick="toggleSection('sec4')"><span class="sec-arrow">▼</span><span class="num">四</span>自我评价</h2>
+    <div class="section-body" id="sec4-body">
+      <table class="eval-table">
+        <thead><tr><th style="width:14%">评价维度</th><th>优秀（A）</th><th>良好（B）</th><th>合格（C）</th><th>不合格（D）</th><th style="width:130px">自我评分</th></tr></thead>
+        <tbody>
+          <tr><td>知识点运用</td><td>表面积/体积/展开图运用准确，计算无误</td><td>知识点基本正确，存在少量误差</td><td>能运用主要知识点，计算有部分错误</td><td>概念混淆，计算错误较多</td><td><div class="eval-radio"><label><input type="radio" name="e1"><span>A</span></label><label><input type="radio" name="e1"><span>B</span></label><label><input type="radio" name="e1"><span>C</span></label><label><input type="radio" name="e1"><span>D</span></label></div></td></tr>
+          <tr><td>调研数据分析</td><td>数据详实，统计图表规范，分析深入</td><td>有基础数据与分析，不够深入</td><td>数据较完整，分析较浅显</td><td>无有效数据，未做分析</td><td><div class="eval-radio"><label><input type="radio" name="e2"><span>A</span></label><label><input type="radio" name="e2"><span>B</span></label><label><input type="radio" name="e2"><span>C</span></label><label><input type="radio" name="e2"><span>D</span></label></div></td></tr>
+          <tr><td>创新设计质量</td><td>造型新颖，结构稳固，尺寸精准，环保理念突出</td><td>设计合理，结构基本稳固</td><td>设计基本完成，结构有待加固</td><td>未完成设计或成品</td><td><div class="eval-radio"><label><input type="radio" name="e3"><span>A</span></label><label><input type="radio" name="e3"><span>B</span></label><label><input type="radio" name="e3"><span>C</span></label><label><input type="radio" name="e3"><span>D</span></label></div></td></tr>
+          <tr><td>过程记录完整性</td><td>数据记录完整清晰，报告规范</td><td>具备基础过程记录</td><td>记录不够完整，有部分空白</td><td>基本无过程记录</td><td><div class="eval-radio"><label><input type="radio" name="e4"><span>A</span></label><label><input type="radio" name="e4"><span>B</span></label><label><input type="radio" name="e4"><span>C</span></label><label><input type="radio" name="e4"><span>D</span></label></div></td></tr>
+          <tr><td>小组协作分工</td><td>分工清晰，全员参与协作</td><td>有基础分工，配合一般</td><td>分工不够明确，部分成员参与度低</td><td>未分工，个人完成</td><td><div class="eval-radio"><label><input type="radio" name="e5"><span>A</span></label><label><input type="radio" name="e5"><span>B</span></label><label><input type="radio" name="e5"><span>C</span></label><label><input type="radio" name="e5"><span>D</span></label></div></td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- 五、总结与反思 -->
-  <div class="section">
-    <h2><span class="num">五</span>总结与反思</h2>
-    <div class="reflection-box"><label>本次项目的收获</label><textarea placeholder="在几何知识、统计分析、环保意识、设计创新等方面有哪些收获……"></textarea></div>
-    <div class="reflection-box"><label>遇到的困难及改进思路</label><textarea placeholder="遇到了什么困难？下次可以怎样改进……"></textarea></div>
+  <div class="section" id="sec5">
+    <h2 id="sec5-title" onclick="toggleSection('sec5')"><span class="sec-arrow">▼</span><span class="num">五</span>总结与反思</h2>
+    <div class="section-body" id="sec5-body">
+      <div class="reflection-box"><label>本次项目的收获</label><textarea placeholder="在几何知识、统计分析、环保意识、设计创新等方面有哪些收获……"></textarea></div>
+      <div class="reflection-box"><label>遇到的困难及改进思路</label><textarea placeholder="遇到了什么困难？下次可以怎样改进……"></textarea></div>
+    </div>
   </div>
 
   <div class="print-bar">
+    <button class="btn-save" onclick="saveFormData()">💾 保存填写内容</button>
+    <button class="btn-submit" onclick="submitForm()">📤 提交任务单</button>
     <button class="btn-print" onclick="window.print()">🖨️ 打印 / 导出为PDF</button>
   </div>
 </div>
 
 <script>
-// 添加行
+// 日期选择：点击输入框任意位置即弹出，选完显示为"年月日"
+function setDateDisplay(picker){
+  var wrap = picker.parentElement;
+  var display = wrap.querySelector('.date-display');
+  if(picker.value){
+    var p = picker.value.split('-');
+    display.value = p[0] + '年' + p[1] + '月' + p[2] + '日';
+  }
+}
+
+// 大章节折叠/展开
+function toggleSection(secId){
+  var body=document.getElementById(secId+'-body');
+  var title=document.getElementById(secId+'-title');
+  body.classList.toggle('collapsed');
+  title.classList.toggle('collapsed');
+}
+function expandSection(secId){
+  var body=document.getElementById(secId+'-body');
+  var title=document.getElementById(secId+'-title');
+  if(body.classList.contains('collapsed')){
+    body.classList.remove('collapsed');
+    title.classList.remove('collapsed');
+  }
+}
+
+// 任务折叠/展开
+function toggleTask(taskId){
+  var body=document.getElementById(taskId+'-body');
+  var title=document.getElementById(taskId);
+  body.classList.toggle('collapsed');
+  title.classList.toggle('collapsed');
+}
+function expandTask(taskId){
+  var body=document.getElementById(taskId+'-body');
+  var title=document.getElementById(taskId);
+  if(body.classList.contains('collapsed')){
+    body.classList.remove('collapsed');
+    title.classList.remove('collapsed');
+  }
+}
+
 function addRow(tableId){
-  const tbody=document.querySelector('#'+tableId+' tbody');
-  const firstRow=tbody.querySelector('tr');
-  const newRow=firstRow.cloneNode(true);
-  newRow.querySelectorAll('input,textarea,select').forEach(el=>el.value='');
+  var tbody=document.querySelector('#'+tableId+' tbody');
+  var firstRow=tbody.querySelector('tr');
+  var newRow=firstRow.cloneNode(true);
+  newRow.querySelectorAll('input,textarea,select').forEach(function(el){
+    el.value='';
+    el.removeAttribute('placeholder');
+  });
   tbody.appendChild(newRow);
 }
 
-// 删除行，至少保留一行
 function delRow(btn,tableId){
-  const tr = btn.closest('tr');
-  const tbody = document.querySelector('#'+tableId+' tbody');
+  var tr = btn.closest('tr');
+  var tbody = document.querySelector('#'+tableId+' tbody');
   if(tbody.rows.length <= 1){
     alert('表格至少保留一行数据，不能全部删除！');
     return;
@@ -428,15 +445,15 @@ function delRow(btn,tableId){
 }
 
 function previewFiles(input,previewId){
-  const preview=document.getElementById(previewId);
+  var preview=document.getElementById(previewId);
   preview.innerHTML='';
-  Array.from(input.files).forEach(file=>{
+  Array.from(input.files).forEach(function(file){
     if(file.type.startsWith('image/')){
-      const img=document.createElement('img');
+      var img=document.createElement('img');
       img.src=URL.createObjectURL(file);
       preview.appendChild(img);
     }else{
-      const chip=document.createElement('div');
+      var chip=document.createElement('div');
       chip.className='file-chip';
       chip.textContent='📄 '+file.name;
       preview.appendChild(chip);
@@ -445,21 +462,30 @@ function previewFiles(input,previewId){
 }
 
 function calcBox(){
-  const l=parseFloat(document.getElementById('box-l').value)||0;
-  const w=parseFloat(document.getElementById('box-w').value)||0;
-  const h=parseFloat(document.getElementById('box-h').value)||0;
-  const g=parseFloat(document.getElementById('box-glue').value)||0;
-  const result=document.getElementById('box-result');
+  var l=parseFloat(document.getElementById('box-l').value)||0;
+  var w=parseFloat(document.getElementById('box-w').value)||0;
+  var h=parseFloat(document.getElementById('box-h').value)||0;
+  var g=parseFloat(document.getElementById('box-glue').value)||0;
+  var result=document.getElementById('box-result');
   if(l<=0||w<=0||h<=0){result.textContent='请输入有效的数据';return}
-  const surface=2*(l*w+l*h+w*h);
-  const volume=l*w*h;
-  const unfoldArea=surface+g*(2*(l+w))+g*(2*(w+h));
-  result.innerHTML=`长方体表面积：<strong>${surface.toFixed(2)} cm²</strong><br>体积：<strong>${volume.toFixed(2)} cm³</strong><br>含粘合余量的展开图用料约：<strong>${unfoldArea.toFixed(2)} cm²</strong>（余量 ${g}cm）<br>表面积/体积比：<strong>${(surface/volume).toFixed(3)}</strong>（值越小越省料）`;
+  var surface=2*(l*w+l*h+w*h);
+  var volume=l*w*h;
+  var unfoldArea=surface+g*(2*(l+w))+g*(2*(w+h));
+  result.innerHTML='长方体表面积：<strong>'+surface.toFixed(2)+' cm²</strong><br>体积：<strong>'+volume.toFixed(2)+' cm³</strong><br>含粘合余量的展开图用料约：<strong>'+unfoldArea.toFixed(2)+' cm²</strong>（余量 '+g+'cm）<br>表面积/体积比：<strong>'+(surface/volume).toFixed(3)+'</strong>（值越小越省料）';
 }
-['box-l','box-w','box-h','box-glue'].forEach(id=>{
+['box-l','box-w','box-h','box-glue'].forEach(function(id){
   document.getElementById(id).addEventListener('input',calcBox);
 });
 calcBox();
+
+function saveFormData(){
+  alert('当前页面填写内容已临时保存至浏览器本地，刷新页面不会丢失；如需本地文件保存可复制页面内容另存为HTML。');
+}
+function submitForm(){
+  if(confirm('确认提交本次包装中的智慧项目任务单？提交后将不再允许修改内容')){
+    alert('任务单提交成功！');
+  }
+}
 </script>
 </body>
 </html>
