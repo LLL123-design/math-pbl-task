@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>珍惜水资源 · 项目学习任务单</title>
+<style>
+  :root{
+    --primary:#2b6cb0;
+    --primary-light:#ebf4ff;
+    --accent:#0088aa;
+    --accent-light:#e6f7fb;
+    --danger:#c53030;
+    --danger-dark:#9b2c2c;
+    --text:#2d3748;
+    --label:#1a202c;
+    --muted:#718096;
+    --border:#e2e8f0;
+    --bg:#f7fafc;
+    --card:#ffffff;
+    --input-bg:#f7fafc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+  .container{max-width:960px;margin:0 auto;padding:24px 16px 60px}
+  .header{text-align:center;padding:32px 20px 24px;background:linear-gradient(135deg,#0088aa,#006680);color:#fff;border-radius:14px;margin-bottom:20px;box-shadow:0 4px 16px rgba(0,136,170,.2)}
+  .header h1{font-size:24px;font-weight:700;letter-spacing:1px}
+  .header p{font-size:14px;opacity:.85;margin-top:8px}
+  .nav-box{background:var(--card);border-radius:12px;padding:18px 22px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  .nav-box .nav-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px dashed var(--border)}
+  .nav-box .nav-head span{font-size:16px;font-weight:700;color:var(--primary)}
+  .nav-box .nav-head em{font-style:normal;font-size:12px;color:var(--muted);margin-left:auto}
+  .nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+  .nav-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;background:var(--bg);text-decoration:none;color:var(--text);font-size:13px;transition:all .15s;border:1px solid transparent}
+  .nav-item:hover{background:var(--primary-light);color:var(--primary);border-color:#bee3f8;transform:translateY(-1px)}
+  .nav-item.sub{background:transparent;padding-left:14px;font-size:12px;color:var(--muted)}
+  .nav-item.sub .dot{width:5px;height:5px;background:var(--muted)}
+  .nav-item.sub:hover{background:var(--primary-light);color:var(--primary)}
+  .section{background:var(--card);border-radius:12px;padding:20px 28px 24px;margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.05);border-left:4px solid var(--accent)}
+  .section h2{font-size:19px;color:var(--accent);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--accent-light);display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+  .section h2 .sec-arrow{display:inline-block;transition:transform .25s;font-size:11px;color:var(--accent);width:14px;text-align:center}
+  .section h2.collapsed .sec-arrow{transform:rotate(-90deg)}
+  .section h2 .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--accent);color:#fff;border-radius:50%;font-size:14px}
+  .section-body.collapsed{display:none}
+  .section h3{font-size:16px;color:var(--text);margin:18px 0 10px;padding-left:10px;border-left:3px solid var(--primary)}
+  .section p{margin-bottom:10px;color:#4a5568}
+  .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+  .info-item label{display:block;font-size:14px;color:var(--label);font-weight:600;margin-bottom:4px}
+  .info-item input{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;background:var(--input-bg);color:var(--text)}
+  .info-item input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
+  .info-item input::placeholder{color:#a0aec0}
+  .date-wrap{position:relative}
+  .info-item .date-display{position:relative;z-index:1;width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;background:var(--input-bg);color:var(--text)}
+  .info-item .date-display:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
+  .info-item .date-display::placeholder{color:#a0aec0}
+  .info-item .date-picker{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2;border:none!important;padding:0!important;margin:0!important;background:transparent!important;font-size:16px}
+  .info-item .date-picker::-webkit-calendar-picker-indicator{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0;padding:0}
+  .info-item .date-picker::-webkit-inner-spin-button{display:none}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  th,td{border:1px solid var(--border);padding:9px 10px;text-align:center;vertical-align:middle}
+  th{background:var(--accent-light);color:var(--accent);font-weight:600}
+  td input,td textarea{width:100%;border:none;outline:none;font-size:14px;background:transparent;font-family:inherit;resize:vertical;color:var(--text);text-align:center}
+  td input::placeholder,td textarea::placeholder{color:#a0aec0;text-align:center}
+  td textarea{min-height:36px}
+  .btn-plus{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;background:var(--primary);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;margin-top:8px}
+  .btn-plus:hover{background:#2c5282}
+  .btn-minus{background:var(--danger);color:#fff;border:none;border-radius:4px;padding:3px 8px;font-size:14px;cursor:pointer}
+  .btn-minus:hover{background:var(--danger-dark)}
+  .stage{background:#fafbfc;border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:14px 0}
+  .stage-tag{display:inline-block;background:var(--accent);color:#fff;font-size:12px;padding:3px 10px;border-radius:12px;margin-bottom:8px}
+  .stage ol{padding-left:22px;margin:8px 0}
+  .stage ol li{margin-bottom:6px;color:#4a5568;text-align:left}
+  .tool-box{background:linear-gradient(135deg,#ebf8ff,#e6f7fb);border:1px dashed #0088aa;border-radius:10px;padding:18px 20px;margin:16px 0}
+  .tool-box h4{color:var(--primary);font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+  .tool-row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:10px}
+  .tool-row .field{flex:1;min-width:140px}
+  .tool-row label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px;text-align:left}
+  .tool-row input{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:14px}
+  .tool-result{background:#fff;padding:12px 16px;border-radius:6px;margin-top:10px;font-size:14px;border-left:3px solid var(--primary);text-align:left}
+  .tool-result strong{color:var(--primary)}
+  .eval-table th{text-align:center}
+  .eval-table td{text-align:center;vertical-align:middle}
+  .eval-table td:first-child{text-align:center;font-weight:500}
+  .eval-radio{display:flex;justify-content:center;gap:6px}
+  .eval-radio label{cursor:pointer}
+  .eval-radio input{display:none}
+  .eval-radio input:checked + span{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .eval-radio span{display:inline-block;padding:4px 10px;border-radius:4px;font-size:13px;border:1px solid var(--border)}
+  .reflection-box{margin-bottom:14px}
+  .reflection-box label{display:block;font-weight:600;color:var(--label);margin-bottom:6px;font-size:14px;text-align:left}
+  .reflection-box textarea{width:100%;min-height:90px;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:inherit;resize:vertical;line-height:1.7;background:var(--input-bg)}
+  .reflection-box textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
+  .print-bar{text-align:center;margin-top:20px;display:flex;gap:15px;justify-content:center}
+  .btn-print{padding:10px 28px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:600;box-shadow:0 2px 8px rgba(0,136,170,.25)}
+  .btn-print:hover{background:#006680}
+  .btn-save{padding:10px 28px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:600}
+  .btn-save:hover{background:#2c5282}
+  .btn-submit{padding:10px 28px;background:#3182ce;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:600}
+  .btn-submit:hover{background:#2b6cb0}
+  .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+  .tag{background:var(--accent-light);color:var(--accent);padding:4px 12px;border-radius:14px;font-size:13px}
+  .tag.blue{background:var(--primary-light);color:var(--primary)}
+  .rule-textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:14px;resize:vertical;margin-top:10px;min-height:80px;background:var(--input-bg)}
+  .rule-textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
+  @media print{
+    body{background:#fff}
+    .nav-box,.btn-print,.btn-plus,.btn-minus,.btn-save,.btn-submit,.section h2 .sec-arrow{display:none!important}
+    .section-body{display:block!important}
+    .section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+  }
+  @media(max-width:640px){
+    .info-grid{grid-template-columns:1fr}
+    .section{padding:16px 16px 20px}
+    .print-bar{flex-direction:column;align-items:center}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>珍惜水资源 · 项目学习任务单</h1>
+    <p>调查用水现状，数学测算浪费水量，树立节水保护意识</p>
+  </div>
+  <div class="nav-box">
+    <div class="nav-head">
+      <span>📑 目录导航</span>
+      <em>点击跳转对应章节</em>
+    </div>
+    <div class="nav-grid">
+      <a class="nav-item" href="#sec1" onclick="expandSection('sec1')"><span class="dot"></span>一、基础信息</a>
+      <a class="nav-item" href="#sec2" onclick="expandSection('sec2')"><span class="dot"></span>二、项目简介</a>
+      <a class="nav-item" href="#sec3" onclick="expandSection('sec3')"><span class="dot"></span>三、项目进程</a>
+      <a class="nav-item" href="#sec4" onclick="expandSection('sec4')"><span class="dot"></span>四、自我评价</a>
+      <a class="nav-item" href="#sec5" onclick="expandSection('sec5')"><span class="dot"></span>五、总结反思</a>
+    </div>
+  </div>
+  <!-- 一、基础信息 -->
+  <div class="section" id="sec1">
+    <h2 id="sec1-title" onclick="toggleSection('sec1')"><span class="sec-arrow">▼</span><span class="num">一</span>基础信息</h2>
+    <div class="section-body" id="sec1-body">
+      <div class="info-grid">
+        <div class="info-item"><label>姓名</label><input type="text" placeholder="请填写姓名"></div>
+        <div class="info-item"><label>班级</label><input type="text" placeholder="如：七年级1班"></div>
+        <div class="info-item"><label>填写日期</label><div class="date-wrap"><input type="text" class="date-display" placeholder="年/月/日" readonly><input type="date" class="date-picker" onchange="setDateDisplay(this)" onclick="try{this.showPicker()}catch(e){}" onfocus="try{this.showPicker()}catch(e){}"></div></div>
+      </div>
+      <h3>团队分工情况</h3>
+      <table id="team-table">
+        <thead><tr><th style="width:30%">成员姓名</th><th>承担任务</th><th style="width:80px">操作</th></tr></thead>
+        <tbody>
+          <tr><td><input type="text" placeholder="如：张三"></td><td><input type="text" placeholder="如：实地走访调查"></td><td><button class="btn-minus" onclick="delRow(this,'team-table')">➖</button></td></tr>
+          <tr><td><input type="text"></td><td><input type="text" placeholder="如：数据记录计算"></td><td><button class="btn-minus" onclick="delRow(this,'team-table')">➖</button></td></tr>
+        </tbody>
+      </table>
+      <button class="btn-plus" onclick="addRow('team-table')">➕ 添加成员</button>
+    </div>
+  </div>
+  <!-- 二、项目简介 -->
+  <div class="section" id="sec2">
+    <h2 id="sec2-title" onclick="toggleSection('sec2')"><span class="sec-arrow">▼</span><span class="num">二</span>项目简介</h2>
+    <div class="section-body" id="sec2-body">
+      <h3>项目背景</h3>
+      <p>水是万物之母、生存之本、文明之源。地球储水量十分丰富，但淡水资源占比极低，可直接利用的淡水资源约占水资源总量的0.3%。我国水资源总量约占全球的0.26%，人均水资源占有量大约只有世界人均水平的四分之一。每年3月22日是“世界水日”，目的是唤醒大众节约、保护水资源的意识。生活中存在很多浪费水的行为，我们可以运用数学方法去调查、测算、分析，呼吁大家节约用水。</p>
+      <h3>项目目标</h3>
+      <p>1. 会运用有理数运算、统计调查、数学建模等数学知识处理生活实际问题；</p>
+      <p>2. 学会设计简单测量方案，收集、整理、分析用水相关数据；</p>
+      <p>3. 发现生活用水浪费问题，对比不同节水方案，完成实践性宣传产出；</p>
+      <p>4. 增强珍惜水资源的意识，提升小组合作、动手实践能力。</p>
+      <h3>涉及知识</h3>
+      <div class="tag-list">
+        <span class="tag">有理数运算</span>
+        <span class="tag">数据统计与调查</span>
+        <span class="tag">数学建模</span>
+        <span class="tag">数据分析</span>
+        <span class="tag blue">社会实践调查</span>
+        <span class="tag blue">水资源保护科普</span>
+      </div>
+    </div>
+  </div>
+  <!-- 三、项目进程 -->
+  <div class="section" id="sec3">
+    <h2 id="sec3-title" onclick="toggleSection('sec3')"><span class="sec-arrow">▼</span><span class="num">三</span>项目进程</h2>
+    <div class="section-body" id="sec3-body">
+      <div class="stage">
+        <span class="stage-tag">阶段一：现象调查记录</span>
+        <ol>
+          <li>在家庭、学校等场所观察，记录生活中浪费水的各类现象。</li>
+          <li>统计各类浪费现象出现频次，找出最普遍的浪费现象。</li>
+        </ol>
+        <table id="waste-situation-table">
+          <thead><tr><th>浪费水现象</th><th>观察地点</th><th>出现频次</th><th>是否普遍（是/否）</th><th style="width:80px">操作</th></tr></thead>
+          <tbody>
+            <tr><td><input type="text" placeholder="如：水龙头长流水"></td><td><input type="text"></td><td><input type="number"></td><td><input type="text"></td><td><button class="btn-minus" onclick="delRow(this,'waste-situation-table')">➖</button></td></tr>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="number"></td><td><input type="text"></td><td><button class="btn-minus" onclick="delRow(this,'waste-situation-table')">➖</button></td></tr>
+          </tbody>
+        </table>
+        <button class="btn-plus" onclick="addRow('waste-situation-table')">➕ 添加记录</button>
+        <p style="margin-top:12px">整理上表调查结果，写出你发现的最普遍的浪费水现象，简单分析产生该现象的原因。</p>
+        <textarea rows="4" placeholder="写下你的分析……" class="rule-textarea"></textarea>
+      </div>
+      <div class="stage">
+        <span class="stage-tag">阶段二：水量测量与建模</span>
+        <ol>
+          <li>从调查选出一种浪费水现象，设计可操作的水量测量方案。</li>
+          <li>明确测量工具、测量步骤、记录项目。</li>
+        </ol>
+        <div class="info-grid" style="grid-template-columns:1fr 1fr">
+          <div class="info-item"><label>选定测量现象</label><input type="text" placeholder="例：滴水的水龙头"></div>
+          <div class="info-item"><label>测量工具</label><input type="text" placeholder="例：量杯、计时器"></div>
+        </div>
+        <textarea rows="3" placeholder="写下完整测量方案：步骤、如何采集数据……" class="rule-textarea"></textarea>
+        <p style="margin-top:12px">数据采集与记录</p>
+        <table id="water-data-table">
+          <thead><tr><th>测量次数</th><th>测量时长(min)</th><th>收集水量(ml)</th><th>每分钟平均流失水量(ml)</th><th style="width:80px">操作</th></tr></thead>
+          <tbody>
+            <tr><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><button class="btn-minus" onclick="delRow(this,'water-data-table')">➖</button></td></tr>
+            <tr><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><button class="btn-minus" onclick="delRow(this,'water-data-table')">➖</button></td></tr>
+          </tbody>
+        </table>
+        <button class="btn-plus" onclick="addRow('water-data-table')">➕ 添加测量记录</button>
+        <div class="tool-box">
+          <h4>💧 辅助计算工具：漏水水量估算</h4>
+          <div class="tool-row">
+            <div class="field"><label>每分钟平均流失水量(L)</label><input type="number" id="water-per-min" value="0.02" min="0" step="0.001"></div>
+          </div>
+          <div class="tool-result" id="water-calc-result">输入每分钟流失水量查看结果</div>
+        </div>
+      </div>
+      <div class="stage">
+        <span class="stage-tag">阶段三：节水方案与实践产出</span>
+        <ol>
+          <li>走访、询问家人、同学，收集生活中实际的节水办法。</li>
+          <li>对比各类节水措施，选出你认为效果最好的一项。</li>
+        </ol>
+        <table id="savewater-table">
+          <thead><tr><th>节水措施</th><th>实施难度（低/中/高）</th><th>节水效果评价</th><th>是否推荐推广</th><th style="width:80px">操作</th></tr></thead>
+          <tbody>
+            <tr><td><input type="text" placeholder="例：洗菜水浇花"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="btn-minus" onclick="delRow(this,'savewater-table')">➖</button></td></tr>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="btn-minus" onclick="delRow(this,'savewater-table')">➖</button></td></tr>
+          </tbody>
+        </table>
+        <button class="btn-plus" onclick="addRow('savewater-table')">➕ 添加节水措施</button>
+        <p style="margin-top:12px">结合调查数据，选择完成至少一项实践产出：节水小贴士海报草稿文字 / 节水调查问卷提纲 / 节水行动倡议短文。在下方完整写下你的成果内容。</p>
+        <textarea rows="8" placeholder="写下你的实践成果全部内容……" class="rule-textarea"></textarea>
+        <h4 style="margin-top:14px;font-size:14px;color:var(--text);text-align:left">实践成果简要说明</h4>
+        <textarea rows="3" placeholder="说明你做的是哪一类成果、核心内容、设计想法……" class="rule-textarea"></textarea>
+        <p style="margin-top:14px;padding:10px 14px;background:var(--accent-light);border-radius:6px;font-size:14px;text-align:center"><strong>成果形式：</strong>用水浪费现象调查表、水量测量数据表、节水小贴士海报草稿文字 / 节水调查问卷提纲 / 节水行动倡议短文。</p>
+      </div>
+    </div>
+  </div>
+  <!-- 四、自我评价 -->
+  <div class="section" id="sec4">
+    <h2 id="sec4-title" onclick="toggleSection('sec4')"><span class="sec-arrow">▼</span><span class="num">四</span>自我评价</h2>
+    <div class="section-body" id="sec4-body">
+      <table class="eval-table">
+        <thead><tr><th style="width:14%">评价维度</th><th>优秀（A）</th><th>良好（B）</th><th>合格（C）</th><th>不合格（D）</th><th style="width:130px">自我评分</th></tr></thead>
+        <tbody>
+          <tr><td>调查方案设计</td><td>方案完整可行，步骤清晰，考虑误差因素</td><td>方案基本可行，主要步骤齐全</td><td>有简单方案，部分环节缺失</td><td>没有设计调查、测量方案</td><td><div class="eval-radio"><label><input type="radio" name="e1"><span>A</span></label><label><input type="radio" name="e1"><span>B</span></label><label><input type="radio" name="e1"><span>C</span></label><label><input type="radio" name="e1"><span>D</span></label></div></td></tr>
+          <tr><td>数据处理运算</td><td>数据记录完整，有理数运算、建模计算全部准确</td><td>数据较完整，仅有少量计算误差</td><td>有部分数据，存在几处计算错误</td><td>数据缺失，计算错误很多</td><td><div class="eval-radio"><label><input type="radio" name="e2"><span>A</span></label><label><input type="radio" name="e2"><span>B</span></label><label><input type="radio" name="e2"><span>C</span></label><label><input type="radio" name="e2"><span>D</span></label></div></td></tr>
+          <tr><td>现象分析思辨</td><td>能结合数据深度分析浪费原因，节水思考有自己见解</td><td>可以结合数据做简单分析，思考合理</td><td>仅有简单描述，分析比较浅显</td><td>不会结合数据做分析</td><td><div class="eval-radio"><label><input type="radio" name="e3"><span>A</span></label><label><input type="radio" name="e3"><span>B</span></label><label><input type="radio" name="e3"><span>C</span></label><label><input type="radio" name="e3"><span>D</span></label></div></td></tr>
+          <tr><td>实践产出质量</td><td>实践成果完整，贴合主题，有创意，实用性强</td><td>完成实践产出，内容贴合主题</td><td>产出基本完成，内容比较简单</td><td>未完成实践产出</td><td><div class="eval-radio"><label><input type="radio" name="e4"><span>A</span></label><label><input type="radio" name="e4"><span>B</span></label><label><input type="radio" name="e4"><span>C</span></label><label><input type="radio" name="e4"><span>D</span></label></div></td></tr>
+          <tr><td>小组协作表现</td><td>分工明确，主动承担任务，积极沟通交流</td><td>可以完成分配任务，有简单交流</td><td>被动完成任务，交流较少</td><td>几乎不参与小组活动</td><td><div class="eval-radio"><label><input type="radio" name="e5"><span>A</span></label><label><input type="radio" name="e5"><span>B</span></label><label><input type="radio" name="e5"><span>C</span></label><label><input type="radio" name="e5"><span>D</span></label></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- 五、总结与反思 -->
+  <div class="section" id="sec5">
+    <h2 id="sec5-title" onclick="toggleSection('sec5')"><span class="sec-arrow">▼</span><span class="num">五</span>总结与反思</h2>
+    <div class="section-body" id="sec5-body">
+      <div class="reflection-box"><label>本次项目的收获</label><textarea placeholder="数学知识、调查实践、节水观念、小组合作方面收获……"></textarea></div>
+      <div class="reflection-box"><label>遇到的困难及改进思路</label><textarea placeholder="测量、调查中遇到什么困难？下次如何优化？……"></textarea></div>
+    </div>
+  </div>
+  <div class="print-bar">
+    <button class="btn-save" onclick="saveFormData()">💾 保存填写内容</button>
+    <button class="btn-submit" onclick="submitForm()">📤 提交任务单</button>
+    <button class="btn-print" onclick="window.print()">🖨️ 打印 / 导出为PDF</button>
+  </div>
+</div>
+<script>
+// 日期选择
+function setDateDisplay(picker){
+  var wrap = picker.parentElement;
+  var display = wrap.querySelector('.date-display');
+  if(picker.value){
+    var p = picker.value.split('-');
+    display.value = p[0] + '年' + p[1] + '月' + p[2] + '日';
+  }
+}
+// 大章节折叠/展开
+function toggleSection(secId){
+  var body=document.getElementById(secId+'-body');
+  var title=document.getElementById(secId+'-title');
+  body.classList.toggle('collapsed');
+  title.classList.toggle('collapsed');
+}
+function expandSection(secId){
+  var body=document.getElementById(secId+'-body');
+  var title=document.getElementById(secId+'-title');
+  if(body.classList.contains('collapsed')){
+    body.classList.remove('collapsed');
+    title.classList.remove('collapsed');
+  }
+}
+//表格增行删行
+function addRow(tableId){
+  var tbody=document.querySelector('#'+tableId+' tbody');
+  var firstRow=tbody.querySelector('tr');
+  var newRow=firstRow.cloneNode(true);
+  newRow.querySelectorAll('input,textarea,select').forEach(function(el){
+    el.value='';
+    el.removeAttribute('placeholder');
+  });
+  tbody.appendChild(newRow);
+}
+function delRow(btn,tableId){
+  var tr = btn.closest('tr');
+  var tbody = document.querySelector('#'+tableId+' tbody');
+  if(tbody.rows.length <= 1){
+    alert('表格至少保留一行数据，不能全部删除！');
+    return;
+  }
+  tbody.removeChild(tr);
+}
+//漏水水量计算
+function calcWater(){
+  var perMin=parseFloat(document.getElementById('water-per-min').value)||0;
+  var resDom=document.getElementById('water-calc-result');
+  if(perMin<=0){
+    resDom.textContent="请输入大于0的每分钟流失水量";
+    return;
+  }
+  var perHour=perMin*60;
+  var perDay=perHour*24;
+  var perMonth30=perDay*30;
+  var perYear=perDay*365;
+  resDom.innerHTML=`每分钟流失：<strong>${perMin.toFixed(3)} L</strong><br>每小时流失：<strong>${perHour.toFixed(2)} L</strong><br>每日流失：<strong>${perDay.toFixed(2)} L</strong><br>每月(30天)流失：<strong>${perMonth30.toFixed(2)} L</strong><br>一年流失：<strong>${perYear.toFixed(2)} L</strong>`;
+}
+document.getElementById('water-per-min').addEventListener('input',calcWater);
+calcWater();
+function saveFormData(){
+  alert('当前页面填写内容已临时保存至浏览器本地，刷新页面不会丢失；如需本地文件保存可复制页面内容另存为HTML。');
+}
+function submitForm(){
+  if(confirm('确认提交本次珍惜水资源项目任务单？提交后将不再允许修改内容')){
+    alert('任务单提交成功！');
+  }
+}
+</script>
+</body>
+</html>

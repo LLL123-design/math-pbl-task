@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一次方程组与CT技术 · 项目学习任务单</title>
+<style>
+  :root{
+    --primary:#2b6cb0;
+    --primary-light:#ebf4ff;
+    --accent:#2f855a;
+    --accent-light:#f0fff4;
+    --danger:#c53030;
+    --danger-dark:#9b2c2c;
+    --text:#2d3748;
+    --label:#1a202c;
+    --muted:#718096;
+    --border:#e2e8f0;
+    --bg:#f7fafc;
+    --card:#ffffff;
+    --input-bg:#f7fafc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+  .container{max-width:960px;margin:0 auto;padding:24px 16px 60px}
+  .header{text-align:center;padding:32px 20px 24px;background:linear-gradient(135deg,#2f855a,#276749);color:#fff;border-radius:14px;margin-bottom:20px;box-shadow:0 4px 16px rgba(47,133,90,.2)}
+  .header h1{font-size:24px;font-weight:700;letter-spacing:1px}
+  .header p{font-size:14px;opacity:.85;margin-top:8px}
+  .nav-box{background:var(--card);border-radius:12px;padding:18px 22px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  .nav-box .nav-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px dashed var(--border)}
+  .nav-box .nav-head span{font-size:16px;font-weight:700;color:var(--primary)}
+  .nav-box .nav-head em{font-style:normal;font-size:12px;color:var(--muted);margin-left:auto}
+  .nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .nav-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;background:var(--bg);text-decoration:none;color:var(--text);font-size:13px;transition:all .15s;border:1px solid transparent}
+  .nav-item:hover{background:var(--primary-light);color:var(--primary);border-color:#bee3f8;transform:translateY(-1px)}
+  .nav-item .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0}
+  .section{background:var(--card);border-radius:12px;padding:20px 28px 24px;margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.05);border-left:4px solid var(--accent)}
+  .section h2{font-size:19px;color:var(--accent);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--accent-light);display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+  .section h2 .sec-arrow{display:inline-block;transition:transform .25s;font-size:11px;color:var(--accent);width:14px;text-align:center}
+  .section h2.collapsed .sec-arrow{transform:rotate(-90deg)}
+  .section h2 .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--accent);color:#fff;border-radius:50%;font-size:14px}
+  .section-body.collapsed{display:none}
+  .section h3{font-size:16px;color:var(--text);margin:18px 0 10px;padding-left:10px;border-left:3px solid var(--primary)}
+  .section p{margin-bottom:10px;color:#4a5568}
+  .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+  .info-item label{display:block;font-size:14px;color:var(--label);font-weight:600;margin-bottom:4px}
+  .info-item input{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;background:var(--input-bg);color:var(--text)}
+  .info-item input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
+  .info-item input::placeholder{color:#a0aec0}
+  .date-wrap{position:relative}
+  .info-item .date-display{position:relative;z-index:1;width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;background:var(--input-bg);color:var(--text)}
+  .info-item .date-display:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
+  .info-item .date-display::placeholder{color:#a0aec0}
+  .info-item .date-picker{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2;border:none!important;padding:0!important;margin:0!important;background:transparent!important;font-size:16px}
+  .info-item .date-picker::-webkit-calendar-picker-indicator{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0;padding:0}
+  .info-item .date-picker::-webkit-inner-spin-button{display:none}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  th,td{border:1px solid var(--border);padding:9px 6px;text-align:center;vertical-align:middle}
+  th{background:var(--accent-light);color:var(--accent);font-weight:600}
+  td textarea{
+    width:100%;
+    border:none;
+    outline:none;
+    font-size:14px;
+    background:transparent;
+    font-family:inherit;
+    resize:vertical;
+    color:var(--text);
+    text-align:center;
+    white-space:pre-wrap;
+    word-wrap:break-word;
+    word-break:break-all;
+    min-height:40px;
+  }
+  td input{
+    width:100%;
+    border:none;
+    outline:none;
+    font-size:14px;
+    background:transparent;
+    font-family:inherit;
+    color:var(--text);
+    text-align:center;
+  }
+  td input::placeholder,td textarea::placeholder{color:#a0aec0;text-align:center}
+  .btn-plus{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;background:var(--primary);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;margin-top:8px}
+  .btn-plus:hover{background:#2c5282}
+  .btn-minus{background:var(--danger);color:#fff;border:none;border-radius:4px;padding:3px 8px;font-size:14px;cursor:pointer}
+  .btn-minus:hover{background:var(--danger-dark)}
+  .stage{background:#fafbfc;border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:14px 0}
+  .stage-tag{display:inline-block;background:var(--accent);color:#fff;font-size:12px;padding:3px 10px;border-radius:12px;margin-bottom:8px}
+  .stage ol{padding-left:22px;margin:8px 0}
+  .stage ol li{margin-bottom:6px;color:#4a5568;text-align:left}
+  .tool-box{background:linear-gradient(135deg,#ebf8ff,#f0fff4);border:1px dashed #4299e1;border-radius:10px;padding:18px 20px;margin:16px 0}
+  .tool-box h4{color:var(--primary);font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+  .tool-row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:10px}
+  .tool-row .field{flex:1;min-width:140px}
+  .tool-row label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px;text-align:left}
+  .tool-row input{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:14px}
+  .tool-result{background:#fff;padding:12px 16px;border-radius:6px;margin-top:10px;font-size:14px;border-left:3px solid var(--primary);text-align:left}
+  .upload-area{border:2px dashed var(--border);border-radius:8px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:#fafbfc}
+  .upload-area:hover{border-color:var(--accent);background:var(--accent-light)}
+  .upload-area .icon{font-size:32px;color:var(--muted)}
+  .upload-area p{color:var(--muted);font-size:13px;margin-top:6px}
+  .upload-preview{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .upload-preview img{max-width:160px;max-height:120px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
+  .upload-preview .file-chip{background:var(--accent-light);color:var(--accent);padding:6px 12px;border-radius:6px;font-size:13px;display:flex;align-items:center;gap:6px}
+  .eval-table th{text-align:center}
+  .eval-table td{text-align:center;vertical-align:middle}
+  .eval-table td:first-child{text-align:center;font-weight:500}
+  .eval-radio{display:flex;justify-content:center;gap:6px}
+  .eval-radio label{cursor:pointer}
+  .eval-radio input{display:none}
+  .eval-radio input:checked + span{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .eval-radio span{display:inline-block;padding:4px 10px;border-radius:4px;font-size:13px;border:1px solid var(--border)}
+  .reflection-box{margin-bottom:14px}
+  .reflection-box label{display:block;font-weight:600;color:var(--label);margin-bottom:6px;font-size:14px;text-align:left}
+  .reflection-box textarea{width:100%;min-height:90px;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:inherit;resize:vertical;line-height:1.7;background:var(--input-bg)}
+  .reflection-box textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
+  .print-bar{text-align:center;margin-top:20px;display:flex;gap:15px;justify-content:center}
+  .btn-print{padding:10px 28px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:600;box-shadow:0 2px 8px rgba(47,133,90,.25)}
+  .btn-print:hover{background:#276749}
+  .btn-save{padding:10px 28px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:600}
+  .btn-save:hover{background:#2c5282}
+  .btn-submit{padding:10px 28px;background:#3182ce;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:600}
+  .btn-submit:hover{background:#2b6cb0}
+  .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+  .tag{background:var(--accent-light);color:var(--accent);padding:4px 12px;border-radius:14px;font-size:13px}
+  .rule-textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:14px;resize:vertical;margin-top:10px;min-height:80px;background:var(--input-bg)}
+  .rule-textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
+  .q-box{margin:12px 0;padding:12px;background:#fff;border:1px solid var(--border);border-radius:8px;}
+  .q-title{font-weight:600;margin-bottom:6px;color:var(--primary);}
+  @media print{
+    body{background:#fff}
+    .nav-box,.btn-print,.btn-plus,.btn-minus,.upload-area,.btn-save,.btn-submit,.section h2 .sec-arrow{display:none!important}
+    .section-body{display:block!important}
+    .section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .header{background:#2f855a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+  @media(max-width:640px){
+    .info-grid{grid-template-columns:1fr}
+    .section{padding:16px 16px 20px}
+    .print-bar{flex-direction:column;align-items:center}
+    .nav-grid{grid-template-columns:1fr 1fr}
+    th,td{padding:6px 2px;font-size:12px}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>一次方程组与CT技术 · 项目学习任务单</h1>
+    <p>从数学建模到医学科技，解码CT背后的方程组</p>
+  </div>
+  <div class="nav-box">
+    <div class="nav-head">
+      <span>📑 目录导航</span>
+      <em>点击跳转对应章节</em>
+    </div>
+    <div class="nav-grid">
+      <a class="nav-item" href="#sec1" onclick="expandSection('sec1')"><span class="dot"></span>一、基础信息</a>
+      <a class="nav-item" href="#sec2" onclick="expandSection('sec2')"><span class="dot"></span>二、项目简介</a>
+      <a class="nav-item" href="#sec3" onclick="expandSection('sec3')"><span class="dot"></span>三、项目进程</a>
+      <a class="nav-item" href="#sec4" onclick="expandSection('sec4')"><span class="dot"></span>四、自我评价</a>
+      <a class="nav-item" href="#sec5" onclick="expandSection('sec5')"><span class="dot"></span>五、总结反思</a>
+    </div>
+  </div>
+
+  <div class="section" id="sec1">
+    <h2 id="sec1-title" onclick="toggleSection('sec1')"><span class="sec-arrow">▼</span><span class="num">一</span>基础信息</h2>
+    <div class="section-body" id="sec1-body">
+      <div class="info-grid">
+        <div class="info-item"><label>姓名</label><input type="text" placeholder="请填写姓名"></div>
+        <div class="info-item"><label>班级</label><input type="text" placeholder="如：七年级1班"></div>
+        <div class="info-item"><label>填写日期</label><div class="date-wrap"><input type="text" class="date-display" placeholder="年/月/日" readonly><input type="date" class="date-picker" onchange="setDateDisplay(this)"></div></div>
+      </div>
+      <h3>团队分工情况</h3>
+      <table id="team-table">
+        <thead><tr><th style="width:30%">成员姓名</th><th>承担任务</th><th style="width:80px">操作</th></tr></thead>
+        <tbody>
+          <tr><td><input type="text" placeholder="如：张三"></td><td><input type="text" placeholder="如：数据计算"></td><td><button class="btn-minus" onclick="delRow(this,'team-table')">➖</button></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><button class="btn-minus" onclick="delRow(this,'team-table')">➖</button></td></tr>
+        </tbody>
+      </table>
+      <button class="btn-plus" onclick="addRow('team-table')">➕ 添加成员</button>
+    </div>
+  </div>
+
+  <div class="section" id="sec2">
+    <h2 id="sec2-title" onclick="toggleSection('sec2')"><span class="sec-arrow">▼</span><span class="num">二</span>项目简介</h2>
+    <div class="section-body" id="sec2-body">
+      <h3>项目背景</h3>
+      <p>CT医学成像，依靠X射线扫描人体，把人体切片拆成微小“体素”。不同组织对X射线吸收值不同；采集多条射线衰减数据，建立方程组，求解每个体素吸收值，就能重建人体内部图像。CT技术背后的核心数学工具就是多元一次方程组。</p>
+      <h3>项目目标</h3>
+      <p>1. 理解断层、体素、X射线衰减等概念，了解CT成像的数学原理；</p>
+      <p>2. 会根据实际情境建立三元一次方程组，掌握消元法求解；</p>
+      <p>3. 根据体素吸收值，区分健康组织、肿瘤、骨质；理解未知数个数与方程组解的关系；</p>
+      <p>4. 感受数学在现代医学科技中的应用价值。</p>
+      <h3>涉及知识</h3>
+      <div class="tag-list">
+        <span class="tag">三元一次方程组</span>
+        <span class="tag">消元法求解</span>
+        <span class="tag">数学建模</span>
+        <span class="tag">医学科技</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec3">
+    <h2 id="sec3-title" onclick="toggleSection('sec3')"><span class="sec-arrow">▼</span><span class="num">三</span>项目进程</h2>
+    <div class="section-body" id="sec3-body">
+      <div class="stage">
+        <span class="stage-tag">阶段1：情境引入与概念理解</span>
+        <ol>
+          <li>阅读资料，搞懂什么是CT断层、体素、X射线总吸收值。</li>
+          <li>思考：为什么不能直接得到每一小块组织的吸收值，而要依靠多条射线扫描？写下你的理解。</li>
+        </ol>
+        <div class="q-box">
+          <div class="q-title">思考1：简述CT断层、体素、X射线衰减的含义</div>
+          <textarea class="rule-textarea"></textarea>
+        </div>
+        <div class="q-box">
+          <div class="q-title">思考2：为什么需要多条不同方向X射线采集数据？</div>
+          <textarea class="rule-textarea"></textarea>
+        </div>
+      </div>
+
+      <div class="stage">
+        <span class="stage-tag">阶段2：建立数学模型，列出并求解三元一次方程组</span>
+        <ol>
+          <li>设体素A、B、C的吸收值分别为x,y,z；射线1穿过A+B得到总吸收p₁；射线2穿过A+C得到总吸收p₂；射线3穿过B+C得到总吸收p₃。</li>
+          <li>根据题意，写出三元一次方程组。代入p₁=0.8，p₂=0.55，p₃=0.65，手写完成完整消元求解过程。</li>
+        </ol>
+        <div class="q-box">
+          <div class="q-title">任务：上传手写三元一次方程组完整消元求解步骤（拍照）</div>
+          <div class="upload-area" onclick="document.getElementById('upload‑solve').click()">
+            <div class="icon">📷</div>
+            <p>点击上传手写解题照片</p>
+            <input type="file" id="upload‑solve" multiple accept="image/*" style="display:none" onchange="previewFiles(this,'preview‑solve')">
+          </div>
+          <div class="upload-preview" id="preview‑solve"></div>
+        </div>
+
+        <div class="tool-box">
+          <h4>📐辅助工具：三元方程组结果验算（输入p1 p2 p3）</h4>
+          <div class="tool-row">
+            <div class="field"><label>p₁(A+B)</label><input type="number" step="0.01" id="ct‑p1" value="0.8"></div>
+            <div class="field"><label>p₂(A+C)</label><input type="number" step="0.01" id="ct‑p2" value="0.55"></div>
+            <div class="field"><label>p₃(B+C)</label><input type="number" step="0.01" id="ct‑p3" value="0.65"></div>
+          </div>
+          <div class="tool-result" id="ct‑result">输入数值，自动验算x,y,z</div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <span class="stage-tag">阶段3：数据分析与病例判断</span>
+        <div class="q-box">
+          <div class="q-title">参考标准：不同组织X射线体素吸收值</div>
+          <p>健康软组织：0.10～0.30；肿瘤组织：0.35～0.55；骨质：0.60以上</p>
+          <p>两组病例：对象甲 p₁=0.80，p₂=0.55，p₃=0.65；对象乙 p₁=0.50，p₂=0.40，p₃=0.30。将两组数据分别填入下方表格计算。</p>
+        </div>
+
+        <table id="ct-table">
+          <thead>
+            <tr>
+              <th>p₁(A+B)</th>
+              <th>p₂(A+C)</th>
+              <th>p₃(B+C)</th>
+              <th>x(A)</th>
+              <th>y(B)</th>
+              <th>z(C)</th>
+              <th>组织判断</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" placeholder="例：0.80"></td>
+              <td><input type="text" placeholder="例：0.55"></td>
+              <td><input type="text" placeholder="例：0.65"></td>
+              <td><input type="text"></td>
+              <td><input type="text"></td>
+              <td><input type="text"></td>
+              <td><textarea placeholder="填写组织类型"></textarea></td>
+              <td><button class="btn-minus" onclick="delRow(this,'ct-table')">➖</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn-plus" onclick="addRow('ct-table')">➕ 添加记录</button>
+
+        <ol>
+          <li>把表格算出的x,y,z与标准吸收值对照，判断每个体素属于哪一类组织。</li>
+          <li>对比对象甲、对象乙的计算结果，判断哪一位检测对象可能存在肿瘤，说明你的判断依据。</li>
+        </ol>
+        <div class="q-box">
+          <div class="q-title">病例判断：写出你的判断以及判断依据</div>
+          <textarea class="rule-textarea"></textarea>
+        </div>
+      </div>
+
+      <div class="stage">
+        <span class="stage-tag">阶段4：拓展探究</span>
+        <p>拓展：2×2共4个体素A,B,C,D，4个未知数；现有扫描得到3个方程，能不能唯一求出4个未知数？解释原因。</p>
+        <div class="q-box">
+          <div class="q-title">拓展思考题解答：方程数量与未知数数量关系</div>
+          <textarea class="rule-textarea"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec4">
+    <h2 id="sec4-title" onclick="toggleSection('sec4')"><span class="sec-arrow">▼</span><span class="num">四</span>自我评价</h2>
+    <div class="section-body" id="sec4-body">
+      <table class="eval-table">
+        <thead><tr><th style="width:16%">评价维度</th><th>优秀（A）</th><th>良好（B）</th><th>合格（C）</th><th>不合格（D）</th><th style="width:130px">自我评分</th></tr></thead>
+        <tbody>
+          <tr><td>知识点运用</td><td>三元一次方程组、消元法运用准确，计算推导无误</td><td>知识点基本正确，存在少量计算误差</td><td>能运用主要知识点，部分推导存在错误</td><td>概念混淆，计算错误较多</td><td><div class="eval-radio"><label><input type="radio" name="e1"><span>A</span></label><label><input type="radio" name="e1"><span>B</span></label><label><input type="radio" name="e1"><span>C</span></label><label><input type="radio" name="e1"><span>D</span></label></div></td></tr>
+          <tr><td>探究与数据分析</td><td>理解CT数学原理，数据分析严谨，推理充分</td><td>理解基本原理，有基础分析，深度不足</td><td>大体读懂原理，分析较为浅显</td><td>不理解原理，没有有效分析</td><td><div class="eval-radio"><label><input type="radio" name="e2"><span>A</span></label><label><input type="radio" name="e2"><span>B</span></label><label><input type="radio" name="e2"><span>C</span></label><label><input type="radio" name="e2"><span>D</span></label></div></td></tr>
+          <tr><td>拓展思考完成度</td><td>拓展思考回答完整，清楚未知数与方程数量关系</td><td>完成拓展思考，理解大体正确</td><td>能简单作答，理解有部分偏差</td><td>未完成拓展思考</td><td><div class="eval-radio"><label><input type="radio" name="e3"><span>A</span></label><label><input type="radio" name="e3"><span>B</span></label><label><input type="radio" name="e3"><span>C</span></label><label><input type="radio" name="e3"><span>D</span></label></div></td></tr>
+          <tr><td>过程记录完整性</td><td>数据、思考记录完整清晰，手写解题上传完整</td><td>具备基础过程记录</td><td>记录不够完整，存在少量空白</td><td>几乎没有过程记录</td><td><div class="eval-radio"><label><input type="radio" name="e4"><span>A</span></label><label><input type="radio" name="e4"><span>B</span></label><label><input type="radio" name="e4"><span>C</span></label><label><input type="radio" name="e4"><span>D</span></label></div></td></tr>
+          <tr><td>小组协作分工</td><td>分工清晰，全员充分参与协作</td><td>有分工，小组配合一般</td><td>分工模糊，部分成员参与少</td><td>没有分工，单人完成</td><td><div class="eval-radio"><label><input type="radio" name="e5"><span>A</span></label><label><input type="radio" name="e5"><span>B</span></label><label><input type="radio" name="e5"><span>C</span></label><label><input type="radio" name="e5"><span>D</span></label></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section" id="sec5">
+    <h2 id="sec5-title" onclick="toggleSection('sec5')"><span class="sec-arrow">▼</span><span class="num">五</span>总结与反思</h2>
+    <div class="section-body" id="sec5-body">
+      <div class="reflection-box"><label>本次项目的收获</label><textarea></textarea></div>
+      <div class="reflection-box"><label>遇到的困难及改进思路</label><textarea></textarea></div>
+    </div>
+  </div>
+
+  <div class="print-bar">
+    <button class="btn-save" onclick="saveFormData()">💾 保存填写内容</button>
+    <button class="btn-submit" onclick="submitForm()">📤 提交任务单</button>
+    <button class="btn-print" onclick="window.print()">🖨️ 打印 / 导出PDF</button>
+  </div>
+</div>
+
+<script>
+function setDateDisplay(picker){
+  var wrap = picker.parentElement;
+  var display = wrap.querySelector('.date-display');
+  if(picker.value){
+    var p = picker.value.split('-');
+    display.value = p[0] + '年' + p[1] + '月' + p[2] + '日';
+  }
+}
+function toggleSection(secId){
+  var body=document.getElementById(secId+'-body');
+  var title=document.getElementById(secId+'-title');
+  body.classList.toggle('collapsed');
+  title.classList.toggle('collapsed');
+}
+function expandSection(secId){
+  var body=document.getElementById(secId+'-body');
+  var title=document.getElementById(secId+'-title');
+  if(body.classList.contains('collapsed')){
+    body.classList.remove('collapsed');
+    title.classList.remove('collapsed');
+  }
+}
+function addRow(tableId){
+  var tbody=document.querySelector('#'+tableId+' tbody');
+  var firstRow=tbody.querySelector('tr');
+  var newRow=firstRow.cloneNode(true);
+  newRow.querySelectorAll('input,textarea').forEach(function(el){
+    el.value='';
+    el.removeAttribute('placeholder');
+  });
+  tbody.appendChild(newRow);
+}
+function delRow(btn,tableId){
+  var tr = btn.closest('tr');
+  var tbody = document.querySelector('#'+tableId+' tbody');
+  if(tbody.rows.length <= 1){alert('表格至少保留一行，不能全部删除！');return;}
+  tbody.removeChild(tr);
+}
+function previewFiles(input,previewId){
+  var preview=document.getElementById(previewId);
+  preview.innerHTML='';
+  Array.from(input.files).forEach(function(file){
+    if(file.type.startsWith('image/')){
+      var img=document.createElement('img');
+      img.src=URL.createObjectURL(file);
+      preview.appendChild(img);
+    }else{
+      var chip=document.createElement('div');
+      chip.className='file-chip';
+      chip.textContent='📄 '+file.name;
+      preview.appendChild(chip);
+    }
+  });
+}
+function saveFormData(){alert('填写内容保存在浏览器本地；如需存档，可以打印另存为PDF。');}
+function submitForm(){if(confirm('确认提交任务单？提交后内容不再修改。')){alert('任务单提交成功！');}}
+
+function calcCT(){
+  let p1=parseFloat(document.getElementById('ct‑p1').value);
+  let p2=parseFloat(document.getElementById('ct‑p2').value);
+  let p3=parseFloat(document.getElementById('ct‑p3').value);
+  let resDom=document.getElementById('ct‑result');
+  if(isNaN(p1)||isNaN(p2)||isNaN(p3)){
+    resDom.innerText="请输入有效的数字";
+    return;
+  }
+  let x=(p1+p2-p3)/2;
+  let y=(p1+p3-p2)/2;
+  let z=(p2+p3-p1)/2;
+  resDom.innerHTML=`x(A)=${x.toFixed(3)}；y(B)=${y.toFixed(3)}；z(C)=${z.toFixed(3)}`;
+}
+['ct‑p1','ct‑p2','ct‑p3'].forEach(id=>document.getElementById(id).addEventListener('input',calcCT));
+calcCT();
+</script>
+</body>
+</html>
